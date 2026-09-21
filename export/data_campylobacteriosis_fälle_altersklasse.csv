@@ -1,0 +1,25 @@
+valueCategory,temporal,temporal_type,georegion,georegion_type,agegroup,agegroup_type,sex,value,pop,incValue,valueYearCumSum,valueMean3y,trend,prct,deltaValue,deltaIncValue,incValuePrctChange,valueMean5y,dataComplete
+cases_10y_mean,2022,year,CHFL,CHFL,0 - 16,agegroup_food,all,,,66.68,,,,,,,,,True
+cases_10y_mean,2022,year,CHFL,CHFL,17 - 24,agegroup_food,all,,,129.4,,,,,,,,,True
+cases_10y_mean,2022,year,CHFL,CHFL,25 - 44,agegroup_food,all,,,79.53,,,,,,,,,True
+cases_10y_mean,2022,year,CHFL,CHFL,45 - 64,agegroup_food,all,,,75.56,,,,,,,,,True
+cases_10y_mean,2022,year,CHFL,CHFL,65+,agegroup_food,all,,,102.75,,,,,,,,,True
+cases_10y_mean,2022,year,CHFL,CHFL,unknown,agegroup_food,all,,,,,,,,,,,,True
+cases_10y_mean,2023,year,CHFL,CHFL,0 - 16,agegroup_food,all,,,64.56,,,,,,,,,True
+cases_10y_mean,2023,year,CHFL,CHFL,17 - 24,agegroup_food,all,,,125.16,,,,,,,,,True
+cases_10y_mean,2023,year,CHFL,CHFL,25 - 44,agegroup_food,all,,,77.21,,,,,,,,,True
+cases_10y_mean,2023,year,CHFL,CHFL,45 - 64,agegroup_food,all,,,74.7,,,,,,,,,True
+cases_10y_mean,2023,year,CHFL,CHFL,65+,agegroup_food,all,,,102.67,,,,,,,,,True
+cases_10y_mean,2023,year,CHFL,CHFL,unknown,agegroup_food,all,,,,,,,,,,,,True
+cases_10y_mean,2024,year,CHFL,CHFL,0 - 16,agegroup_food,all,,,63.84,,,,,,,,,True
+cases_10y_mean,2024,year,CHFL,CHFL,17 - 24,agegroup_food,all,,,124.13,,,,,,,,,True
+cases_10y_mean,2024,year,CHFL,CHFL,25 - 44,agegroup_food,all,,,76.86,,,,,,,,,True
+cases_10y_mean,2024,year,CHFL,CHFL,45 - 64,agegroup_food,all,,,75.16,,,,,,,,,True
+cases_10y_mean,2024,year,CHFL,CHFL,65+,agegroup_food,all,,,104.28,,,,,,,,,True
+cases_10y_mean,2024,year,CHFL,CHFL,unknown,agegroup_food,all,,,,,,,,,,,,True
+cases_10y_mean,2025,year,CHFL,CHFL,0 - 16,agegroup_food,all,,,63.93,,,,,,,,,True
+cases_10y_mean,2025,year,CHFL,CHFL,17 - 24,agegroup_food,all,,,124.94,,,,,,,,,True
+cases_10y_mean,2025,year,CHFL,CHFL,25 - 44,agegroup_food,all,,,77.3,,,,,,,,,True
+cases_10y_mean,2025,year,CHFL,CHFL,45 - 64,agegroup_food,all,,,76.64,,,,,,,,,True
+cases_10y_mean,2025,year,CHFL,CHFL,65+,agegroup_food,all,,,108.48,,,,,,,,,True
+cases_10y_mean,2025,year,CHFL,CHFL,unknown,agegroup_food,all,,,,,,,,,,,,True
