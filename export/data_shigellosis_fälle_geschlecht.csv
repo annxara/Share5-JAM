@@ -1,0 +1,13 @@
+valueCategory,temporal,temporal_type,georegion,georegion_type,agegroup,agegroup_type,sex,value,pop,incValue,valueYearCumSum,valueMean3y,trend,prct,deltaValue,deltaIncValue,incValuePrctChange,valueMean5y,dataComplete
+cases_10y_cumsum,2022,year,CHFL,CHFL,all,agegroup_food,female,704.0,,,,,,43.9,,,,,True
+cases_10y_cumsum,2022,year,CHFL,CHFL,all,agegroup_food,male,897.0,,,,,,55.9,,,,,True
+cases_10y_cumsum,2022,year,CHFL,CHFL,all,agegroup_food,unknown,3.0,,,,,,0.2,,,,,True
+cases_10y_cumsum,2023,year,CHFL,CHFL,all,agegroup_food,female,695.0,,,,,,42.2,,,,,True
+cases_10y_cumsum,2023,year,CHFL,CHFL,all,agegroup_food,male,947.0,,,,,,57.5,,,,,True
+cases_10y_cumsum,2023,year,CHFL,CHFL,all,agegroup_food,unknown,4.0,,,,,,0.2,,,,,True
+cases_10y_cumsum,2024,year,CHFL,CHFL,all,agegroup_food,female,723.0,,,,,,42.4,,,,,True
+cases_10y_cumsum,2024,year,CHFL,CHFL,all,agegroup_food,male,979.0,,,,,,57.5,,,,,True
+cases_10y_cumsum,2024,year,CHFL,CHFL,all,agegroup_food,unknown,2.0,,,,,,0.1,,,,,True
+cases_10y_cumsum,2025,year,CHFL,CHFL,all,agegroup_food,female,748.0,,,,,,42.6,,,,,True
+cases_10y_cumsum,2025,year,CHFL,CHFL,all,agegroup_food,male,1007.0,,,,,,57.3,,,,,True
+cases_10y_cumsum,2025,year,CHFL,CHFL,all,agegroup_food,unknown,2.0,,,,,,0.1,,,,,True
