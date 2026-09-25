@@ -1,17 +1,37 @@
+// Grösse der Particles
 let size = 20;
+
+// Anzahl der Particles
+let particles_count = 160;
 
 // Array für eine Mehrzahl von Arrays
 let particles = [];
 
+// Definieren der verschiedenen Anziehungspunkte
+let attractor1;
+let attractor2;
+let attractor3;
+let attractor4;
+let attractor5;
+let attractor6;
+
 
 
 function setup() {
-  createCanvas(800, 800);
+  createCanvas(600, 1000);
 
   angleMode(DEGREES);
-  
+
+  // Erstellen des Anziehungspunktes
+  attractor1 = createVector(width/2, height/2);
+  attractor2 = createVector(width/2, height/3);
+  attractor3 = createVector(width/2, height/3*2);
+  attractor4 = createVector(width/2, height/4*3);
+  attractor5 = createVector(width/2, height/4*2);
+  attractor6 = createVector(width/2, height/4);
+
   // Array für Particles
-  for(let i = 0; i < 30; i++){
+  for(let i = 0; i < particles_count; i++){
     let p = new Particle(random(40,width-40), random(40,height-40), 0, 0);
     particles.push(p);
   }
@@ -49,6 +69,10 @@ class Particle{
     // Beschleunigung
     this.acc = createVector(0,0.01);
     this.color = color(10,10,60, 200);
+
+    // setzen des attractors, um ihn später zu ändern
+    this.attractor = attractor1;
+
   }
 
   collision(other){
@@ -93,11 +117,9 @@ class Particle{
   // Position der Particles wird geupdates
   update(){
 
-    // Position des Anziehungspunktes
-    let anziehungs_punkt = createVector(width/2,height/2);
-
+    
     // Berechnung eines neuen Vektors und nicht Veränderung des ursprünglichen
-    let dir = p5.Vector.sub(anziehungs_punkt,this.pos);
+    let dir = p5.Vector.sub(this.attractor,this.pos);
 
     // Messen der Länge des Vektors
     let d = dir.mag();
@@ -110,11 +132,14 @@ class Particle{
 
       // Erneute Verkürzung des Vaktors
       dir.mult(0.1);
-
       this.acc = dir;
+
     } else{
       this.acc.set(0,0);
     }
+    
+
+    
 
     // If-Statement zum Umdrehen des Ellipsen am Rand
     if (this.pos.x > width | this.pos.x < 0){
@@ -140,8 +165,41 @@ class Particle{
     noStroke();
     fill(this.color);
     translate(this.pos.x, this.pos.y);
-
     ellipse(0,0,size,size);
     pop();
   }
 }
+
+// Wenn Taste gedrückt wird, wird attractor gewechselt
+function keyTyped() {
+
+  // Wechsel zu mehreren Anziehungspunkten
+  if (key === "1") {
+    particles.forEach((particle, index) => {
+      if (index < particles.length / 2) {
+        particle.attractor = attractor2;
+      } else {
+        particle.attractor = attractor3;
+      }
+    });
+  } else if(key == "2") {
+    for (let particle of particles) {
+      particle.attractor = attractor4;
+    }
+  } else if(key == "3") {
+    for (let particle of particles) {
+      particle.attractor = attractor1;
+    }
+  } else if (key === "4") {
+    particles.forEach((particle, index) => {
+      if (index < particles.length / 3) {
+        particle.attractor = attractor4;
+      } else if (index < particles.length/5*4){
+        particle.attractor = attractor5;
+      } else {
+        particle.attractor = attractor6;
+      }
+    });
+  }
+}
+
