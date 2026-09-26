@@ -72,7 +72,6 @@ class Particle{
 
     // setzen des attractors, um ihn später zu ändern
     this.attractor = attractor1;
-
   }
 
   collision(other){
@@ -124,7 +123,7 @@ class Particle{
     // Messen der Länge des Vektors
     let d = dir.mag();
 
-    // Anziehung zu Maus nur unter Bedingung
+    // Anziehung zum Punkt nur unter Bedingung
     if(d > 40){
 
       // Normalize --> Vektorlänge = 1
@@ -161,12 +160,9 @@ class Particle{
 
   // Particles werden gezeichnet
   display(){
-    push();
     noStroke();
     fill(this.color);
-    translate(this.pos.x, this.pos.y);
-    ellipse(0,0,size,size);
-    pop();
+    ellipse(this.pos.x,this.pos.y,size,size);
   }
 }
 
