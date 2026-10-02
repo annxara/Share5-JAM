@@ -14,6 +14,8 @@ const sketch = (p) => { // p = p5 instance, const sketch ist für die p5 instanz
     const circles = [];
     const baseSize = 20;
     const minDistance = baseSize * 2 + 6;
+    const startX = tile.x + tile.w / 2;
+    const startY = tile.y + tile.h / 2;
 
     for (let i = 0; i < circleCount; i++) { // mit copilot: damit sich die kreise nicht überlappen -> nochmals anschauen
       let x = 0;
@@ -25,8 +27,8 @@ const sketch = (p) => { // p = p5 instance, const sketch ist für die p5 instanz
         y = tile.y + 20 + Math.random() * (tile.h - 40);
 
         const overlaps = circles.some((other) => {
-          const dx = x - other.x;
-          const dy = y - other.y;
+          const dx = x - other.targetX;
+          const dy = y - other.targetY;
           const distance = Math.sqrt(dx * dx + dy * dy);
           return distance < minDistance;
         });
@@ -37,19 +39,49 @@ const sketch = (p) => { // p = p5 instance, const sketch ist für die p5 instanz
       }
 
       circles.push({
-        x,
-        y,
-        size: baseSize,
-        start: i * 220,
-        duration: 700,
-        maxSize: baseSize
+        x: startX,
+        y: startY,
+        size: 0,
+        opacity: 0,
+        targetX: x,
+        targetY: y,
+        maxSize: baseSize,
+        delay: i * 0.12,
+        duration: 1.1
       });
     }
 
     return circles;
   }
 
-  function updateTileData() {
+  function animatePopCircles() {
+    const tile = tileData[0];
+    if (!tile || !popCircles.length) return;
+
+    popCircles.forEach((circle) => {
+      gsap.fromTo(
+        circle,
+        {
+          x: tile.x + tile.w / 2, // Startposition in der Mitte des Tiles
+          y: tile.y + tile.h / 2, 
+          size: 0,
+          opacity: 0
+        },
+        {
+          x: circle.targetX,
+          y: circle.targetY,
+          size: circle.maxSize,
+          opacity: 1,
+          duration: circle.duration,
+          delay: circle.delay,
+          ease: "back.out(1.6)",
+          overwrite: true
+        }
+      );
+    });
+  }
+
+  function updateTileData() { 
     const w = p.width;
     const h = p.height;
     const tileW = (w - padding * 2 - gap * (cols - 1)) / cols;
@@ -72,6 +104,7 @@ const sketch = (p) => { // p = p5 instance, const sketch ist für die p5 instanz
 
     if (tileData[0]) {
       popCircles = createPopCircles(tileData[0]);
+      animatePopCircles();
     }
   }
 
@@ -95,13 +128,9 @@ const sketch = (p) => { // p = p5 instance, const sketch ist für die p5 instanz
 
       if (tileIndex === 0) {
         popCircles.forEach((circle) => {
-          const elapsed = p.millis() - circle.start;
-          const t = p.constrain(elapsed / circle.duration, 0, 1);
-          const r = p.lerp(0, circle.maxSize, t);
-
           p.noStroke();
-          p.fill(90, 103, 255, 220);
-          p.circle(circle.x, circle.y, r * 2);
+          p.fill(90, 103, 255, 220 * circle.opacity);
+          p.circle(circle.x, circle.y, circle.size * 2);
         });
       }
     });
