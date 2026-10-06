@@ -1,0 +1,13 @@
+valueCategory,temporal,sex,value,prct
+cases_10y_cumsum,2022,female,7169.0,48.4
+cases_10y_cumsum,2022,male,7628.0,51.5
+cases_10y_cumsum,2022,unknown,15.0,0.1
+cases_10y_cumsum,2023,female,7444.0,48.5
+cases_10y_cumsum,2023,male,7906.0,51.5
+cases_10y_cumsum,2023,unknown,14.0,0.1
+cases_10y_cumsum,2024,female,7985.0,48.7
+cases_10y_cumsum,2024,male,8385.0,51.2
+cases_10y_cumsum,2024,unknown,17.0,0.1
+cases_10y_cumsum,2025,female,8402.0,48.5
+cases_10y_cumsum,2025,male,8899.0,51.4
+cases_10y_cumsum,2025,unknown,19.0,0.1
