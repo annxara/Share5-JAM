@@ -9,7 +9,7 @@ let gridsize = 5;
 let tSize = 250;
 let maxSpeed = 5;
 // Anzahl Fälle
-let cases_count = 261;
+let cases_count = 26;
 
 async function setup() {
   createCanvas(800, 800);
