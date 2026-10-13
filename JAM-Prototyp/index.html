@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JAM-Prototyp</title>
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://use.typekit.net/web2swg.css">
     <script src="js/p5.js"></script>
     
 </head>
@@ -16,11 +17,10 @@
         </div>
 
         <div class="brandbar">
-            <div class="brand-logo">Logo</div>
-            <div class="brand-text">
+            <img class="brand-logo" src="assets/images/bag_ofsp_logo.jpeg" alt="Bundesamt für Gesundheit Logo"><div class="brand-text">
                 <div class="brand-title">Bundesamt für Gesundheit BAG</div>
                 <div class="brand-subtitle">Infoportal übertragbare Krankheiten</div>
-            </div>"
+            </div>
         </div>
 
         <nav class="mainnav">
@@ -32,6 +32,47 @@
             <a href="#">Datenexplorer</a>
         </nav>
     </header>
+
+<section class="page-intro">
+    <h1>Lebensmittelübertragbare Krankheiten</h1>
+    <p>
+        Lebensmittelübertragene Krankheiten entstehen durch verunreinigte Lebensmittel oder Trinkwasser. In der Schweiz werden vor allem Infektionen mit Campylobacter, Salmonellen oder EHEC gemeldet, deutlich seltener mit Shigellen. Typische Beschwerden sind Durchfall, Bauchschmerzen, Übelkeit oder Erbrechen. Bei älteren oder immungeschwächten Personen können die Verläufe schwerer sein. Mehr Infos
+    </p>
+</section>
+
+<section class="orange-section">
+    <div class="orange-section-inner">
+        <section class="scrolly-layout">
+            <aside class="sidebar">
+
+                <div class="disease-group active">
+                    <h2>Salmonellose</h2>
+                    <p>Eine Salmonellose ist eine bakterielle Magen-Darm-Infektion, die meist durch den Verzehr von kontaminierten Lebensmitteln wie rohem Fleisch, Eiern oder Geflügel ausgelöst wird. Mehr Infos  </p>
+
+                    <div class="sidebar-link">Übersicht</div>
+                    <div class="sidebar-link">Daten</div>
+                </div>
+
+                <div class="disease-group">
+                    <h2>Campylobacteriose</h2>
+                </div>
+
+                <div class="disease-group">
+                    <h2>Shigellose</h2>
+                </div>
+
+                <div class="disease-group">
+                    <h2>EHEC</h2>
+                </div>
+            </aside>
+
+            <div class="scrolly-content">
+                <!-- orange Fläche / Visualisierung -->
+            </div>
+        </section>
+    </div>
+</section>
+
     <script src="sketch.js"></script>
 </body>
 </html>
