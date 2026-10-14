@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <!-- Grundlegende Dokumentmetadaten und responsive Darstellung. -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Architektur GSAP × p5.js </title>
+  <!-- CSS und D3 werden vor den eigenen Scripts geladen. -->
+  <link rel="stylesheet" href="style.css">
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+
+  <!-- p5 hängt seine feste Canvas in diesen Container. -->
+  <div id="canvas-container"></div>
+
+  <!-- Jede Section definiert über data-layout das nächste Partikel-Layout. -->
+  <main>
+    <!-- data-layout verweist auf eine Funktion in layouts.js -->
+    <section class="section" data-layout="total">
+      <div class="section__content">
+        <h2>gemeldete Fälle im August 2026</h2>
+      </div>
+    </section>
+
+    <section class="section" data-layout="change">
+      <div class="section__content">
+        <h2>Veränderugn zum Vormonat (Juli 2026)</h2>
+      </div>
+    </section>
+
+    <section class="section" data-layout="seasonality">
+      <div class="section__content">
+        <h2>Salmonellen treten durchschnittlich am meisten im August und im Oktober auf</h2>
+        
+      </div>
+    </section>
+
+    <section class="section" data-layout="trend">
+      <div class="section__content">
+        <h2>Die Anzahl der aufgetretenen Fälle von Selmonellen pro Jahr ist steigend</h2>
+          </div>
+    </section>
+  </main>
+
+  
+  <!-- Unsichtbares Debug-Panel für Layoutnamen und Scrollfortschritt. -->
+  <aside class="debug">
+    <h2>Debug Info</h2>
+    <div id="debug-label">total</div>
+    <div class="debug__bar"><div class="debug__fill" id="debug-fill"></div></div>
+    <div id="debug-value">100 %</div>
+  </aside>
+  
+  
+  <!-- Externe Bibliotheken müssen vor den abhängigen eigenen Scripts geladen werden. -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
+
+  <!-- Ladefolge: Zustand, Daten, Layouts, Scrollsteuerung, p5-Zeichenlogik. -->
+  <script src="js/state.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/layouts.js"></script>
+  <script src="js/scroll.js"></script>
+  <script src="js/sketch.js"></script>
+</body>
+</html>
