@@ -146,7 +146,7 @@ body {
 .sidebar {
     position: sticky;
     top: 0;
-    width: 300px;
+    width: 400px;
     background: #fff;
     border-right: 1px solid #ddd;
     align-self: flex-start;
@@ -161,10 +161,8 @@ body {
 .sidebar-link {
     padding: 8px 16px;
     border-top: 1px solid #9a9a9a;
-    font-size: 13pt;
-    color: #222;
+    font-size: 20px;
     cursor: pointer;
-    text-decoration: none;
 }
 
 .sidebar-link:hover {
@@ -172,7 +170,13 @@ body {
 }
 
 .disease-group {
-    padding: 0 12px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.disease-group li {
+    list-style: none;
 }
 
 .disease-group h2 {
@@ -181,8 +185,9 @@ body {
     line-height: 1.15;
     color: #222;
     font-family: "noto-sans", sans-serif;
-    padding-left: 100px;
-    padding-right: 12px;
+    padding-left: 18px;
+    padding-right: 18px;
+    margin: 0;
 }
 
 .disease-group p {
@@ -191,27 +196,57 @@ body {
     line-height: 1.5;
     color: #222;
     font-family: "noto-sans", sans-serif;
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-left: 18px;
+    padding-right: 18px;
+    margin: 0 0 12px;
 }
 
+.disease-group:not(.active) p,
+.disease-group:not(.active) .disease-submenu {
+    display: none;
+}
+
+.disease-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.marker {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    background-image: url("../assets/images/pfeil-share5.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    flex-shrink: 0;
+    margin-left: 20px;
+}
 
 .disease-group.active {
-    padding-top: 18px; /* Add some padding to the top of the active group */
+    padding-top: 4px;
 }
 
-.disease-group.active h2 {
+.disease-group h2 {
     font-weight: 400;
     margin-bottom: 8px;
-    padding-left: 100px;
+    padding-left: 65px;
 }
 
-.disease-group.active p {
+.disease-group p {
     margin-bottom: 12px;
-    padding-left: 100px;
+    padding-left: 110px;
 }
 
-.sidebar-link {
+.disease-submenu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.disease-submenu .sidebar-link {
     padding: 8px 16px;
     border-top: 1px solid #9a9a9a;
     font-size: 20px;
@@ -220,10 +255,34 @@ body {
     color: #222;
     cursor: pointer;
     text-decoration: none;
+    list-style: none;
+    margin-left: 100px;
 }
 
-.sidebar-link:hover {
+.disease-submenu .sidebar-link:hover {
     background: #f3f3f3;
+}
+
+.disease-submenu .sidebar-link.active {
+    background: #f0f0f0;
+    font-weight: 400;
+    margin-left: 100px;
+}
+
+.data-submenu {
+    display: none;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.disease-submenu .data-toggle.active .data-submenu {
+    display: block;
+}
+
+.data-submenu .sidebar-link {
+    margin-left: 120px;
+    font-size: 18px;
 }
 
 .more-info {
@@ -233,4 +292,72 @@ body {
     font-style: normal;
     color: #222;
 }
+
+@media (max-width: 500px) {
+    .scrolly-layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: static;
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .scrolly-content {
+        min-height: 800px;
+    }
+}
+
+@media (max-width: 640px) {
+    .mainnav {
+        flex-wrap: wrap;
+        gap: 10px 18px;
+    }
+
+    .page-intro {
+        padding: 20px 16px 12px;
+    }
+
+    .page-intro h1 {
+        font-size: 24px;
+    }
+
+    .page-intro p {
+        font-size: 14px;
+    }
+
+    .sidebar {
+        position: sticky;
+        top: 0;
+        width: 300px;
+        background: #fff;
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .disease-group h2 {
+        font-size: 22px;
+        padding-left: 100px;
+    }
+
+    .disease-group p {
+        padding-left: 8px;
+        font-size: 12px;
+    }
+
+    .disease-group.active h2 {
+        padding-left: 0;
+    }
+
+    .disease-group.active p {
+        padding-left: 12px;
+    }
+
+    .disease-submenu .sidebar-link {
+        font-size: 18px;
+    }
+}
+
 
