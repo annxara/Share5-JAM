@@ -173,15 +173,20 @@ function drawInfo(layoutName, alpha) {
     if (!topic) return;
 
     fill(255, alpha * 255);
-    textAlign(CENTER, TOP);
+    textAlign(CENTER, CENTER);
     textSize(18);
     textLeading(24);
     text(
         getTopicInfo(data, topic),
-        width / 2,
-        height * 0.08,
-        width * 0.8
+        visibleScrollyCenterX(),
+        height * 0.14
     );
+}
+
+function visibleScrollyCenterX() {
+    const sidebar = document.querySelector('.scrolly-layout > .sidebar');
+    const sidebarWidth = sidebar ? sidebar.getBoundingClientRect().width : 0;
+    return sidebarWidth + (width - sidebarWidth) / 2;
 }
 
 function windowResized() {

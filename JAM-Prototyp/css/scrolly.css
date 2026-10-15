@@ -106,3 +106,31 @@ header,
   height: 100%;
 
 }
+
+/* Das Scrollytelling nutzt die gesamte Seitenbreite. */
+.scrolly-layout {
+  position: relative;
+  display: block;
+  min-height: 700px;
+}
+
+.scrolly-content {
+  width: 100%;
+  min-width: 0;
+}
+
+.scrolly-layout > .sidebar {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 400px;
+  z-index: 4;
+  background: #fff;
+}
+
+.section__content h2 {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
