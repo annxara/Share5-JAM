@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>saisonalitaet_expertenmodus</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="libraries/p5.js"></script>
+    <script src="libraries/d3.js"></script>
+    <script src="sketch.js"></script>
+    
+</head>
+<body>
+    
+    <div class="viz-container">
+
+        <div class="toolbar">
+            <h2>Saisonalität & Historische Entwicklung</h2>
+            <p> Vergleich über das Jahr & Anzahl Fälle pro Monat </p>
+            <br>
+            <div class="btn-row">
+                <input type="button" class="btn" id="btn-sais-mean" value="10-Jahres-Durchschnitt">
+                <input type="button" class="btn" id="btn-sais-2026" value="Aktuelles Jahr">
+                <input type="button" class="btn" id="btn-sais-sais" value="Saisonalität">
+                <input type="button" class="btn" id="btn-sais-historisch" value="Historische Entwicklung">
+            </div>
+
+        </div>
+
+        
+
+        <div id="canvas-container-sais"></div>
+
+        <div class="toolbar-bottom">
+            <p>Stand: August 2026</p>
+            <input type="button" class="btn" id="btn-download" value="Download">
+        </div>
+
+
+    </div>
+</body>
+</html>

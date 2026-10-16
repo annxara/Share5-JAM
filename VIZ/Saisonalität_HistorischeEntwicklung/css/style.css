@@ -1,0 +1,141 @@
+@font-face {
+    font-family: "NotoSans";
+    src: url("/assets/NotoSans-Regular.ttf") format("truetype");
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: "NotoSans";
+    src: url("/assets/NotoSans-Bold.ttf") format("truetype");
+    font-weight: 800;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "NotoSans";
+    font-weight: 400;
+    color: red;
+
+}
+
+h2 {
+    font-weight: 800;
+    font-size: 20pt;
+}
+
+p {
+    font-size: 10pt;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #f0f0f0;
+}
+
+
+.viz-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    float: left;
+    width:100%;
+    flex-direction:column;
+    position: relative;
+}
+
+.btn {
+    z-index: 2;
+    background: none;
+    border-color: red;
+    color: red;
+    padding: 5px 10px;
+    border-radius: 6px;
+    transition-duration: 0.1s;
+    font-size: 10pt;
+
+    width: auto; /* oder ganz entfernen */
+    min-width: 0;
+}
+
+
+.btn.active {
+  background-color: red; /* Green */
+  color: white;
+}
+
+.btn-row {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+}
+
+.btn-row .btn {
+    flex: 1 1 0;
+}
+
+
+#canvas-container-sais {
+    width: 100%;
+    height: 100%;
+}
+
+.toolbar {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    width: calc(100% - 2rem);
+}
+
+.toolbar-bottom {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    z-index: 10;
+}
+
+.slider {
+    appearance: none;
+    width: 50vw;
+    height: 2px;
+    background: #fd0000;
+    border: none;
+    z-index: 1000;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #fd0000;
+    border: none;
+}
+
+.slider-label,
+.slider-value-label {
+    z-index: 1000;
+    color: #fd0000;
+    font-family: sans-serif;
+    font-size: 14px;
+    pointer-events: none;
+}
+
+.slider-value-label {
+    transform: translateX(-50%);
+}
+
+.viz-container {
+    height: 100vh;
+    width: 100vw;
+}
