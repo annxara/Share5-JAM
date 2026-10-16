@@ -4,7 +4,7 @@ let data_historisch = [];
 // Kreisgrössen für Saisonalität
 let saisonalitaet_size = [5, 10, 20, 40];
 
-// Momentan ausgewähltes Jahr
+// Momentan angezeigtes Jahr
 let current_year = 2025;
 
 // Variablen für aufteilung der Daten
@@ -18,6 +18,8 @@ let months = ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "O
 
 // Aufteilung des Fensters
 let month_step;
+// Positionsvaiable
+let pos_y_historisch;
 
 // Variablen für Slider
 let slider;
@@ -30,11 +32,11 @@ let sliderValueLabel;
 let fill_color;
 let background_color;
 
+// Variablen für Buttons --> Sichtbarkeit der einzelnen Variablen
 let mean_isvisible = false;
 let aktuell_isvisible = false;
 let historisch_isvisible = true;
 let sais_isvisible = true;
-let pos_y_historisch;
 
 
 async function setup() {
@@ -44,7 +46,7 @@ async function setup() {
 
     // Umstellen der Modi
     rectMode(CENTER);
-    textAlign(CENTER);
+    textAlign(CENTER, CENTER);
 
     // Definieren der Farbe
     fill_color = color("red");
@@ -57,33 +59,33 @@ async function setup() {
     fontStyleBold = await loadFont("/assets/NotoSans-Bold.ttf");
     fontStyleRegular = await loadFont("/assets/NotoSans-Regular.ttf");
 
-    // Daten laden und die Gesamtzahl der Partikel bestimmen.
+    // ---------------------------- Daten --------------------------------
+    // Daten laden
     data_historisch = await d3.dsv(',', '/data/data_salmonellosis_historisch.csv', d3.autoType);
-
 
     // Herauslesen des Höchsten Wertes, um Grafik zu skalieren
     max_data = d3.max(data_historisch, d => d.value);
 
-    // Berechnung der Anzahl 100er Abschnitte
+    // Berechnung der Anzahl 100er Abschnitte --> für 100er Abschnitte
     max_100 = ceil(max_data / 100);
 
-    // Auslesen des aktuell angezeigten Jahres
+    // Auslesen der Daten des aktuell angezeigten Jahres
     current_data = data_historisch.filter(
         d => d.year == current_year
     );
 
+    // Auslesen der Daten für das Aktuelle Jahr
     data_2026 = data_historisch.filter(
         d => d.year == "2026"
     );
-
-    console.log(data_2026);
 
     // Herauslesen der Medianwerte
     median_data = data_historisch.filter(
         d => d.valueCategory == "median"
     );
 
-    // Erstellen des Sliders
+    // ---------------------------- Slider --------------------------------
+    // Erstellen des Sliders in P5
     slider = createSlider(2013, 2026, current_year); //(min, max Wert)
     slider.addClass("slider");
     slider.size(month_step * 4);
@@ -103,53 +105,56 @@ async function setup() {
     sliderValueLabel.position(width / 2, height - 130);
     slider.input(updateCurrentYear);
 
+    // ---------------------------- Buttons --------------------------------
+    // Durchschnitt
     document.getElementById("btn-sais-mean").addEventListener("click", () => {
         if (mean_isvisible) {
+            // Wenn Durchschnitt schon eingeblendet wird er ausgeblendet
             mean_isvisible = false;
             document.getElementById("btn-sais-mean").classList.remove("active");
         } else {
+            // Wenn Durchschnitt ausgeblendet wird er eingeblendet
             mean_isvisible = true;
             document.getElementById("btn-sais-mean").classList.add("active");
         }
-
-        
     })
 
+    // Saisonalität
     document.getElementById("btn-sais-sais").addEventListener("click", () => {
-        if (historisch_isvisible) {
-            historisch_isvisible = false;
+        if (sais_isvisible) {
+            // Wenn Saisonalität schon eingeblendet wird ausgeblendet
+            sais_isvisible = false;
+            document.getElementById("btn-sais-sais").classList.remove("active");
+        } else if (!sais_isvisible) {
+            // Wenn Saisonalität noch nich eingeblendet wird eingeblendet
             sais_isvisible = true;
-            document.getElementById("btn-sais-sais").classList.add("active");
-            document.getElementById("btn-sais-historisch").classList.remove("active");
-        } else {
-            historisch_isvisible = true;
              document.getElementById("btn-sais-sais").classList.add("active");
-        }
+        } 
     })
 
+    // Aktuelles Jahr
     document.getElementById("btn-sais-2026").addEventListener("click", () => {
         if (aktuell_isvisible) {
+            // Wenn eingeblendet wird ausgeblendet
             aktuell_isvisible = false;
             document.getElementById("btn-sais-2026").classList.remove("active");
         } else {
+            // Wenn ausgeblendet wird ausgeblendet
             aktuell_isvisible = true;
             document.getElementById("btn-sais-2026").classList.add("active");
         }
     })
 
+    // Historische Entwicklung
     document.getElementById("btn-sais-historisch").addEventListener("click", () => {
-        if (sais_isvisible && !historisch_isvisible) {
-            sais_isvisible = true;
+        if (historisch_isvisible){
+            // Wenn eingeblendet wird ausgeblendet
+            historisch_isvisible = false;
             document.getElementById("btn-sais-historisch").classList.remove("active");
-            
-        } else if(sais_isvisible){
-            sais_isvisible = false;
+        } else if (!historisch_isvisible){
+            // Wenn ausgeblendet wird eingeblendet
+            historisch_isvisible = true;
             document.getElementById("btn-sais-historisch").classList.add("active");
-            document.getElementById("btn-sais-sais").classList.remove("active");
-        } else {
-            sais_isvisible = true;
-            document.getElementById("btn-sais-historisch").classList.remove("active");
-            document.getElementById("btn-sais-sais").classList.add("active");
         }
     })
 }
@@ -162,7 +167,7 @@ function draw() {
     textFont(fontStyleRegular);
     textAlign(RIGHT, CENTER);
 
-
+    let linien_dicke_raster = 0.5;
 
     // Linienhöhe der Monatsunterteilung
     let line_height = height / 2;
@@ -177,12 +182,19 @@ function draw() {
     let historisch_height_1 = step_100 * max_100 / (max_100 * 100);
 
 
+    // ---------------------------- Monatsbeschriftung / Abtrennung --------------------------------
     // Linien für Monats-Abtrennung
+    // Deckkraft herunterstellen
+    fill_color.setAlpha(100);
+    fill(fill_color);
+    // Zeichnen der Linien
     for (i = 0; i < 13; i++) {
         let x = month_step * (i + 1) + month_step / 2;
-        rect(x, height / 2, 1, line_height);
+        rect(x, height / 2, linien_dicke_raster, line_height);
     }
 
+    fill_color.setAlpha(255);
+    fill(fill_color);
     // Monatsbeschriftung
     for (i = 0; i < 12; i++) {
         push();
@@ -193,14 +205,21 @@ function draw() {
         pop();
     }
 
+    // ---------------------------- 100er Linien / y-Achsenbeschriftung / Median --------------------------------
     // Achsenbeschriftung & Einbelnden Durchschnitt
     if (historisch_isvisible) {
         // Linien für 100er-Einteilung waagrecht
+        // Herunterstellen der Deckkraft
+        fill_color.setAlpha(100);
+        fill(fill_color);
+        // Zeichnen der Linien
         for (i = 0; i < (max_100 + 1); i++) {
             let y = start_100 - step_100 * i;
             rect(width / 2, y, month_step * 12, 1);
         }
 
+        fill_color.setAlpha(255);
+        fill(fill_color);
         // Achsenbeschriftung y-Achse
         rect(month_step, height / 2, 1, line_height);
         text("0", month_step - 10, height / 2 + line_height / 2);
@@ -208,38 +227,35 @@ function draw() {
 
         // Anzeigen des Medians
         if (mean_isvisible) {
-
             push();
             // Linie stricheln --> [Linienlänge, Abstandslänge]
             drawingContext.setLineDash([5, 5]);
-
             beginShape();
             for (i = 0; i < median_data.length; i++) {
-
                 noFill();
                 stroke(fill_color);
-
                 let x = month_step * (i + 1) + month_step;
                 let pos_y_historisch = start_100 - (median_data[i].value) * historisch_height_1;
 
+                // Beschriftung des Graphs
                 if(i == 0){
                     text("ø", x - 10, pos_y_historisch);
                 }
-
+                // Erstellen der Linie
                 vertex(x, pos_y_historisch);
             }
             endShape();
-
             pop();
         }
     } else {
         // Anzeigen des Medians
         if (mean_isvisible) {
             // Linie stricheln --> [Linienlänge, Abstandslänge]
-            
             push();
             // Kreise für Saisonalität & Verbindungen dazwischen
             drawingContext.setLineDash([5, 2]);
+
+            // Zeichnen des Medians der Saisonalität
             beginShape();
             for (i = 0; i < median_data.length; i++) {
                 // Kreise
@@ -248,58 +264,57 @@ function draw() {
                 let size = saisonalitaet_size[median_data[i].value_cat - 1];
                 let x = month_step * (i + 1) + month_step;
 
+                // Positionierung
                 if(aktuell_isvisible){
                     pos_y_historisch = height / 2 + line_height/4;
                 } else {
                     pos_y_historisch = height / 2 + line_height/4;
                 }
-
                 if(i == 0){
                     text("ø", x - 10, pos_y_historisch);
                 }
-                
-                
 
+                // Zeichnen Ellipse
                 ellipse(x, pos_y_historisch, size, size);
 
                 // Verbindung zwischen den Kreisen
-                // Add vertices.
-
                 vertex(x, pos_y_historisch);
             }
             endShape();
-
             pop();
-            
         }
     }
 
 
 
-
+    // ---------------------------- Zeichnen der Kreise & Verbindungen --------------------------------
     // Kreise für Saisonalität & Verbindungen dazwischen
     beginShape();
     for (i = 0; i < current_data.length; i++) {
-        // Kreise
         noStroke();
         fill(fill_color);
+        // Grösse anhand der Kategorie
         let size = saisonalitaet_size[current_data[i].value_cat - 1];
         let x = month_step * (i + 1) + month_step;
 
+        // Positionierung
         if (historisch_isvisible) {
             pos_y_historisch = start_100 - (current_data[i].value) * historisch_height_1;
         } else {
             pos_y_historisch = height / 2;
             
         }
+        // Wenn Saisonalität sichtbar werden Kreise gezeichnet
         if(sais_isvisible){
             ellipse(x, pos_y_historisch, size, size);
         }
         
+        // Beschriftung des Jahres
         if(i == 0){
             text(current_data[i].year, x - 10, pos_y_historisch);
         }
 
+        // Beschriftung der Anzahl Fälle
         push();
         textAlign(CENTER);
         let x_cases = month_step * (i + 1) + month_step;
@@ -310,40 +325,42 @@ function draw() {
         // Verbindung zwischen den Kreisen
         noFill();
         stroke(fill_color);
-        // Add vertices.
-
         vertex(x, pos_y_historisch);
     }
     endShape();
 
+    // ---------------------------- 2026 --------------------------------
+    // Zeichnen der Werte des Aktuellen Jahres
     if (aktuell_isvisible) {
         beginShape();
         for (i = 0; i < data_2026.length; i++) {
-            // Kreise
             noStroke();
             fill(fill_color);
+
+            // Grösse anhand der Kategorie
             let size = saisonalitaet_size[data_2026[i].value_cat - 1];
             let x = month_step * (i + 1) + month_step;
 
+            // Positionierung
             if (historisch_isvisible) {
                 pos_y_historisch = start_100 - (data_2026[i].value) * historisch_height_1;
-            } else {
-                
+            } else {   
                 pos_y_historisch = height/2 - line_height/4
-                
             }
 
+            // Text für Jahr
             if(i == 0){
                 text(data_2026[i].year, x - 10, pos_y_historisch);
             }
 
-            ellipse(x, pos_y_historisch, size, size);
+            if(sais_isvisible){
+                // Zeichnen des Kreises
+                ellipse(x, pos_y_historisch, size, size);
+            }
 
             // Verbindung zwischen den Kreisen
             noFill();
             stroke(fill_color);
-            // Add vertices.
-
             vertex(x, pos_y_historisch);
         }
         endShape();
@@ -351,11 +368,15 @@ function draw() {
 
 }
 
+// ---------------------------- Funktion für Slider --------------------------------
 //current_year an Slider anpassen
 function updateCurrentYear() {
     current_year = slider.value();
+
+    // Updaten des Slider Labels
     sliderValueLabel.html("Jahr: " + current_year);
 
+    // Neufiltern der Daten nach angezeigtem Jahr
     current_data = data_historisch.filter(
         d => d.year == current_year
     );
