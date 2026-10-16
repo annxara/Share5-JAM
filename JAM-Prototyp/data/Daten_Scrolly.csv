@@ -1,0 +1,11 @@
+﻿Krankheit;Oberthema;Anzahl_Particles;Monat;Trend;Text;Info
+Salmonellose;Aktualitaet;555;-;-;555;gemeldete Fälle im August 2026
+Salmonellose;Veraenderung;265;-;-;+ 265;Veränderung zum Vormonat (Juli 2026)
+Salmonellose;Saisonalitaet;298;August;-;-;Salmonellose tritt durchschnittlich am meisten im August und im Oktober auf
+Salmonellose;Saisonalitaet;190;Oktober;-;-;Salmonellose tritt durchschnittlich am meisten im August und im Oktober auf
+Salmonellose;Trend;1043;-;steigend;-;Die Anzahl der gemeldeten Fälle von Salmonellose pro Jahr ist steigend
+Campylobacteriose;Aktualitaet;1392;-;-;1392;gemeldete Fälle im August 2026
+Campylobacteriose;Veraenderung;112;-;-;+ 112;Veränderung zum Vormonat (Juli 2026)
+Campylobacteriose;Saisonalitaet;1034;August;;;Campylobacteriose tritt durchschnittlich am meisten im August und im Juli auf
+Campylobacteriose;Saisonalitaet;931;Juli;-;-;Campylobacteriose tritt durchschnittlich am meisten im August und im Juli auf
+Campylobacteriose;Trend;3357;-;steigend;-;Die Anzahl der gemeldeten Fälle von Campylobacteriose pro Jahr ist steigend
