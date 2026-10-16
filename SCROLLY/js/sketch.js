@@ -87,6 +87,11 @@ function buildLayouts() {
         return layoutFunction(CASES, area, layoutData, visibleCount, secondaryCount);
     });
 
+
+
+
+
+
     // Beim Wechsel von change zu seasonality bleiben Saisonalitäts-Partikel unten,
     // während die überschüssigen Aktualitäts-Partikel nach oben wegfliegen.
     intermediateLayouts = {
