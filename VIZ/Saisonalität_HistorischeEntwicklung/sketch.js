@@ -31,6 +31,7 @@ let sliderValueLabel;
 // Variable für Farbe
 let fill_color;
 let background_color;
+let fill_color_highlight;
 
 // Variablen für Buttons --> Sichtbarkeit der einzelnen Variablen
 let mean_isvisible = false;
@@ -49,8 +50,10 @@ async function setup() {
     textAlign(CENTER, CENTER);
 
     // Definieren der Farbe
-    fill_color = color("red");
-    background_color = color(220);
+    fill_color_highlight = color("#F77F1B");
+    fill_color = color("#181717");
+    background_color = color(255);
+
 
     // Berechnen der Abschnitte des Canvas für Monate
     month_step = width / 15;
@@ -233,7 +236,8 @@ function draw() {
             beginShape();
             for (i = 0; i < median_data.length; i++) {
                 noFill();
-                stroke(fill_color);
+                stroke(fill_color_highlight);
+                strokeWeight(2);
                 let x = month_step * (i + 1) + month_step;
                 let pos_y_historisch = start_100 - (median_data[i].value) * historisch_height_1;
 
@@ -253,14 +257,14 @@ function draw() {
             // Linie stricheln --> [Linienlänge, Abstandslänge]
             push();
             // Kreise für Saisonalität & Verbindungen dazwischen
-            drawingContext.setLineDash([5, 2]);
+            drawingContext.setLineDash([5, 5]);
 
             // Zeichnen des Medians der Saisonalität
             beginShape();
             for (i = 0; i < median_data.length; i++) {
                 // Kreise
-                stroke(fill_color);
-                fill(background_color);
+                stroke(fill_color_highlight);
+                strokeWeight(2);
                 let size = saisonalitaet_size[median_data[i].value_cat - 1];
                 let x = month_step * (i + 1) + month_step;
 
@@ -275,8 +279,10 @@ function draw() {
                 }
 
                 // Zeichnen Ellipse
+                fill("white");
                 ellipse(x, pos_y_historisch, size, size);
 
+                noFill();
                 // Verbindung zwischen den Kreisen
                 vertex(x, pos_y_historisch);
             }
@@ -335,7 +341,7 @@ function draw() {
         beginShape();
         for (i = 0; i < data_2026.length; i++) {
             noStroke();
-            fill(fill_color);
+            fill(fill_color_highlight);
 
             // Grösse anhand der Kategorie
             let size = saisonalitaet_size[data_2026[i].value_cat - 1];
@@ -360,7 +366,7 @@ function draw() {
 
             // Verbindung zwischen den Kreisen
             noFill();
-            stroke(fill_color);
+            stroke(fill_color_highlight);
             vertex(x, pos_y_historisch);
         }
         endShape();
