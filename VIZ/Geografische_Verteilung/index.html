@@ -18,45 +18,60 @@
 
     <div class="viz-container">
 
-        <div class="toolbar">
+        <div class="toolbar-geo">
 
-            <div class="btns-kantone">
-                <input type="button" class="btn-kantone" id="btn-kanton-ag" value="Aargau" canton="AG">
-                <input type="button" class="btn-kantone" id="btn-kanton-ai" value="Appenzell-Inneroden" canton="AI">
-                <input type="button" class="btn-kantone" id="btn-kanton-ar" value="Appenzell-Ausserroden" canton="AR">
-                <input type="button" class="btn-kantone" id="btn-kanton-bl" value="Basel-Landschaft" canton="BL">
-                <input type="button" class="btn-kantone" id="btn-kanton-bs" value="Basel-Stadt" canton="BS">
-                <input type="button" class="btn-kantone" id="btn-kanton-be" value="Bern" canton="BE">
-                <input type="button" class="btn-kantone" id="btn-kanton-fr" value="Freiburg" canton="FR">
-                <input type="button" class="btn-kantone" id="btn-kanton-ge" value="Genf" canton="GE">
-                <input type="button" class="btn-kantone" id="btn-kanton-gl" value="Glarus"canton="GL">
-                <input type="button" class="btn-kantone" id="btn-kanton-gr" value="Graubünden"canton="GR">
-                <input type="button" class="btn-kantone" id="btn-kanton-ju" value="Jura" canton="JU">
-                <input type="button" class="btn-kantone" id="btn-kanton-lu" value="Luzern" canton="LU">
-                <input type="button" class="btn-kantone" id="btn-kanton-ne" value="Neuenburg" canton="NE">
-                <input type="button" class="btn-kantone" id="btn-kanton-nw" value="Nidwalden" canton="NW">
-                <input type="button" class="btn-kantone" id="btn-kanton-ow" value="Obwalden" canton="OW">
-                <input type="button" class="btn-kantone" id="btn-kanton-sw" value="Schwyz" canton="SZ">
-                <input type="button" class="btn-kantone" id="btn-kanton-sh" value="Schaffhausen" canton="SH">
-                <input type="button" class="btn-kantone" id="btn-kanton-sg" value="St.Gallen" canton="SG">
-                <input type="button" class="btn-kantone" id="btn-kanton-so" value="Solothurn" canton="SO">
-                <input type="button" class="btn-kantone" id="btn-kanton-ti" value="Tessin" canton="TI">
-                <input type="button" class="btn-kantone" id="btn-kanton-tg" value="Thurgau" canton="TG">
-                <input type="button" class="btn-kantone" id="btn-kanton-ur" value="Uri" canton="UR">
-                <input type="button" class="btn-kantone" id="btn-kanton-vd" value="Waadt" canton="VD">
-                <input type="button" class="btn-kantone" id="btn-kanton-vs" value="Wallis" canton="VS">
-                <input type="button" class="btn-kantone" id="btn-kanton-zg" value="Zug" canton="ZG">
-                <input type="button" class="btn-kantone" id="btn-kanton-zh" value="Zürich" canton="ZH">
+            <h2>Geografische Verteilung</h2>
+            <p> Fälle pro 100'000 EinwohnerInnen im Kanton</p>
+            <br>
+
+
+            <p class="titel-legende">Kantone:</p>
+            
+            <div class="container-interaction">
+                <div class="btns-kantone">
+                    <input type="button" class="btn-kantone" id="btn-kanton-ag" value="Aargau" canton="AG">
+                    <input type="button" class="btn-kantone" id="btn-kanton-gr" value="Graubünden" canton="GR">
+                    <input type="button" class="btn-kantone" id="btn-kanton-sg" value="St.Gallen" canton="SG">
+                    <input type="button" class="btn-kantone" id="btn-kanton-ar" value="Appenzell A. Rh." canton="AR">
+                    <input type="button" class="btn-kantone" id="btn-kanton-ju" value="Jura" canton="JU">
+                    <input type="button" class="btn-kantone" id="btn-kanton-ti" value="Tessin" canton="TI">
+                    <input type="button" class="btn-kantone" id="btn-kanton-ai" value="Appenzell I. Rh." canton="AI">
+                    <input type="button" class="btn-kantone" id="btn-kanton-lu" value="Luzern" canton="LU">
+                    <input type="button" class="btn-kantone" id="btn-kanton-tg" value="Thurgau" canton="TG">
+                    <input type="button" class="btn-kantone" id="btn-kanton-bl" value="Basel-Landschaft" canton="BL">
+                    <input type="button" class="btn-kantone" id="btn-kanton-ne" value="Neuenburg" canton="NE">
+                    <input type="button" class="btn-kantone" id="btn-kanton-ur" value="Uri" canton="UR">
+                    <input type="button" class="btn-kantone" id="btn-kanton-bs" value="Basel-Stadt" canton="BS">
+                    <input type="button" class="btn-kantone" id="btn-kanton-nw" value="Nidwalden" canton="NW">
+                    <input type="button" class="btn-kantone" id="btn-kanton-vd" value="Waadt" canton="VD">
+                    <input type="button" class="btn-kantone" id="btn-kanton-be" value="Bern" canton="BE">
+                    <input type="button" class="btn-kantone" id="btn-kanton-ow" value="Obwalden" canton="OW">
+                    <input type="button" class="btn-kantone" id="btn-kanton-vs" value="Wallis" canton="VS">
+                    <input type="button" class="btn-kantone" id="btn-kanton-fr" value="Freiburg" canton="FR">
+                    <input type="button" class="btn-kantone" id="btn-kanton-sw" value="Schwyz" canton="SZ">
+                    <input type="button" class="btn-kantone" id="btn-kanton-zg" value="Zug" canton="ZG">
+                    <input type="button" class="btn-kantone" id="btn-kanton-ge" value="Genf" canton="GE">
+                    <input type="button" class="btn-kantone" id="btn-kanton-sh" value="Schaffhausen" canton="SH">
+                    <input type="button" class="btn-kantone" id="btn-kanton-zh" value="Zürich" canton="ZH">
+                    <input type="button" class="btn-kantone" id="btn-kanton-gl" value="Glarus" canton="GL">
+                    <input type="button" class="btn-kantone" id="btn-kanton-so" value="Solothurn" canton="SO">
+                </div>
+
+
+                <input type="button" class="btn" id="btn-kantonsgrenze" value="Kantonsgrenzen">
             </div>
-
-            <input type="button" class="btn" id="btn-kantonsgrenze" value="Kantonsgrenzen">
-
         </div>
 
 
         <div id="canvas-container-geo"></div>
 
+        <div class="toolbar-bottom">
+            <p>Stand: August 2026</p>
+            <input type="button" class="btn" id="btn-download" value="Download">
+        </div>
+
     </div>
+
 
 </body>
 

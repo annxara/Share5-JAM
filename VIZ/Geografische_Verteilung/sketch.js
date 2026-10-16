@@ -1,20 +1,31 @@
+// Variable für Farbe
+let fill_color;
+let fill_color_highlight;
+let background_color;
 
-
+// Variablen für Daten
 let data_geo = [];
 let current_data = [];
 
+// Variablen für Kantonsgrenzen
 let kantonsgrenzen;
 let cantonPolygons = [];
 
+// Momentan angezeigtes Jahr --> beim Laden
 let current_year = 2025;
 
-let projection
 
+let projection;
+
+// Array um Kreise darin zu speichern
 let circles_geo = [];
 
 
+// Annordnen der Kreise (Abstand)
+let step = 15;
+
+// Array für Kreisgrössen
 let geo_size = [5.00, 5.75, 6.60, 7.59, 8.72, 10.02, 11.52, 13.24, 15.22, 17.49, 20.10, 23.10, 26.53, 30.48, 35.02, 40.00];
-let circle_size = 10;
 
 // Variablen für Slider
 let slider;
@@ -23,24 +34,42 @@ let sliderMinLabel;
 let sliderMaxLabel;
 let sliderValueLabel;
 
+// Für Buttons-Interaktion
 let kantonsgrenzen_isvisible = false;
 let selected_canton = false;
+
+// Text für Legende
+let legende_text_geo_1 = "Umso grösser der Kreis, desto mehr"
+let legende_text_geo_2 = "Fälle pro 100'000 EinwohnerInnen"
+
+
 
 
 
 
 async function setup() {
+    // Um Canvas im html zu platzieren
     let canvas_geo = createCanvas(windowWidth, windowHeight);
     canvas_geo.parent("canvas-container-geo");
 
+    // Einstellen der Modi
     textAlign(CENTER);
+    rectMode(CENTER);
+    angleMode(DEGREES);
+
+    // Farben
+    fill_color = color("#181717");
+    fill_color_highlight = color("#F77F1B");
+    background_color = color(255);
 
     // Hereinladen der Schriftarten
     fontStyleBold = await loadFont("/assets/NotoSans-Bold.ttf");
     fontStyleRegular = await loadFont("/assets/NotoSans-Regular.ttf");
 
-    textFont(fontStyleRegular)
+    textFont(fontStyleRegular);
 
+    // ---------------------------- Daten --------------------------------
+    // Hereinladen der Daten
     data_geo = await d3.dsv(",", "/data/data_salmonellosis_georegion.csv", d3.autoType);
 
     current_data = data_geo.filter(
@@ -50,18 +79,16 @@ async function setup() {
     // Hereinladen des Geojson für Kantonsgrenzen
     kantonsgrenzen = await loadJSON("/data/Kantonsgrenzen.geojson");
 
-    console.log(kantonsgrenzen);
-
     projection = d3
         .geoMercator()
         .center([8.23, 46.8])
         .translate([width / 2, height / 2])
-        .scale(width * 9);
+        .scale(width * 8);
 
     buildCantonPolygons();
     createCircleGrid();
 
-
+    // ---------------------------- Slider --------------------------------
     // Erstellen des Sliders
     slider = createSlider(2013, 2025, current_year); //(min, max Wert)
     slider.addClass("slider");
@@ -82,13 +109,16 @@ async function setup() {
     sliderValueLabel.position(width / 2, height - 130);
     slider.input(updateCurrentYear);
 
+    // ---------------------------- Buttons --------------------------------
     // Einblenden der Kantonsgrenzen
     // !!! Id ohne . vorne
     document.getElementById("btn-kantonsgrenze").addEventListener("click", () => {
         if (kantonsgrenzen_isvisible) {
             kantonsgrenzen_isvisible = false;
+            document.getElementById("btn-kantonsgrenze").classList.remove("active");
         } else {
             kantonsgrenzen_isvisible = true;
+            document.getElementById("btn-kantonsgrenze").classList.add("active");
         }
     })
 
@@ -96,78 +126,114 @@ async function setup() {
 
         btn.addEventListener("click", () => {
 
-            if (selected_canton){
+            if (selected_canton === btn.getAttribute("canton")) {
                 selected_canton = false;
-            } else{
+                btn.classList.remove("active");
+            } else {
+
+                document.querySelectorAll(".btn-kantone").forEach(b =>
+                    b.classList.remove("active")
+                );
+
                 selected_canton = btn.getAttribute("canton");
+                btn.classList.add("active");
             }
-
-            console.log(selected_canton); // AG
         });
-
     });
-
 
 }
 
 function draw() {
+    background(background_color);
 
-    background(255);
-
-
+    // Wenn Daten nicht geladen abbrechen
     if (!kantonsgrenzen) return;
-
-
-    if (kantonsgrenzen_isvisible) {
-        drawCantons();
-    }
-
-
 
     noStroke();
 
-    for (let circle of circles_geo) {
+    // ---------------------------- Fälle pro 100'000 EinwohnerInnen --------------------------------
+    // Zeichnen der Kreise
+    for (let i = 0; i < circles_geo.length; i++) {
+        let circle = circles_geo[i];
+        // Daten des momentan Kreises auslesen
         let current_canton_circle = current_data.find(
             d => d.georegion == circle.canton
         );
-
-        if(selected_canton){
-            if (selected_canton == current_canton_circle.georegion){
-                fill("red");
+        // für Button --> Wenn ausgewählter Kanton übereinstimmt wird eingefärbt
+        if (selected_canton) {
+            if (selected_canton == current_canton_circle.georegion) {
+                noStroke();
+                fill(fill_color_highlight);
+                // Text für Anzahl Fälle des ausgewählten Kantons
+                push();
+                textAlign(LEFT, CENTER);
+                text(current_canton_circle.georegion + ": " + current_canton_circle.incValue, 20, height / 2);
+                pop();
             } else {
-                fill(0);
+                noStroke();
+                fill(fill_color);
             }
         } else {
-            fill(0);
+            fill(fill_color);
         }
 
-        if (current_canton_circle) {
-            circle_size = geo_size[current_canton_circle.incValue_cat];
-        }
+        // Herauslesen der Kreisgrösse anhand der Kategorie
+        circle_size = geo_size[current_canton_circle.incValue_cat];
 
+        // Zeichnen Kreis
         ellipse(circle.x, circle.y, circle_size, circle_size);
+
+        // ---------------------------- Legende --------------------------------
+        if (i == 0) {
+            push();
+            let this_circle_size = 17.5;
+            let rect_width = textWidth(legende_text_geo_1);
+            translate(circle.x, circle.y);
+
+            textAlign(LEFT);
+            text(legende_text_geo_1, 90, -this_circle_size * 3);
+            text(legende_text_geo_2, 90, -this_circle_size * 2);
+            rect(
+                rect_width - 35,
+                -this_circle_size * 1.5,
+                rect_width + 30,
+                1
+            );
+            push();
+            rotate(-45);
+            rect( this_circle_size * 2, this_circle_size, rect_width / 5, 1);
+            pop();
+
+            pop();
+        } else {
+            noStroke();
+        }
     }
 
-
+    // ---------------------------- Button --> Kantonsgrenze --------------------------------
+    if (kantonsgrenzen_isvisible) {
+        fill(255, 110);
+        //noFill();
+        stroke(fill_color);
+        strokeWeight(1.5);
+        drawCantons();
+    }
 }
 
-// Erzeugt Kantonsgrenzen
+// ---------------------------- Kantonsgrenzen --------------------------------
 function buildCantonPolygons() {
-
     cantonPolygons = [];
-
     for (let feature of kantonsgrenzen.features) {
-
+        // Herauslesen des Kantons
         let canton = feature.properties.KTKZ;
 
+        // Je nach geometry.type
         if (feature.geometry.type === "Polygon") {
-
             for (let ring of feature.geometry.coordinates) {
-
                 let projectedRing = ring.map(coord =>
                     projection(coord)
                 );
-
+                // Kanton wird mit Polygon gespeichert
                 cantonPolygons.push({
                     canton: canton,
                     polygon: projectedRing
@@ -176,15 +242,11 @@ function buildCantonPolygons() {
         }
 
         if (feature.geometry.type === "MultiPolygon") {
-
             for (let poly of feature.geometry.coordinates) {
-
                 for (let ring of poly) {
-
                     let projectedRing = ring.map(coord =>
                         projection(coord)
                     );
-
                     cantonPolygons.push({
                         canton: canton,
                         polygon: projectedRing
@@ -195,23 +257,20 @@ function buildCantonPolygons() {
     }
 }
 
-// Erzeugt die Punkte
+// ---------------------------- Kreise --------------------------------
 function createCircleGrid() {
-
     circles_geo = [];
-
-    let step = 15;
-
     let x = 120;
     let y = 0;
 
+    // Anzahl gezeichneter Kreise
     let circle_count = ((width - 120) / step) * (height / step);
 
     for (let i = 0; i < circle_count; i++) {
-
+        // Kanton des Ursprungpunktes wird herausgelesen
         let canton = getCantonAt(x, y);
-        
 
+        // Wenn es einen Kanton gibt, wird dieser zusammen mit Position gepushed
         if (canton) {
             circles_geo.push({ x: x, y: y, canton: canton });
         }
@@ -223,11 +282,22 @@ function createCircleGrid() {
             x = 120;
         }
     }
-
-    console.log(circles_geo);
 }
 
+// ---------------------------- Kanton an Punkt auslesen --------------------------------
+// Gibt den Kanton des Punktes zurück
+function getCantonAt(x, y) {
 
+    for (let polyData of cantonPolygons) {
+
+        if (pointInPolygon(x, y, polyData.polygon)) {
+            return polyData.canton;
+        }
+    }
+    return null;
+}
+
+// ---------------------------- Überprüfung der Punkte --------------------------------
 // Überprüft, ob Punkt sich in Polygon befindet oder nicht
 function pointInPolygon(px, py, polygon) {
 
@@ -251,28 +321,11 @@ function pointInPolygon(px, py, polygon) {
     return inside;
 }
 
-
-// Gibt den Kanton des Punktes zurück
-function getCantonAt(x, y) {
-
-    for (let polyData of cantonPolygons) {
-
-        if (pointInPolygon(x, y, polyData.polygon)) {
-            return polyData.canton;
-        }
-    }
-    return null;
-}
-
-
+// ---------------------------- Zeichnen der Kantongrenzen --------------------------------
 function drawCantons() {
-    stroke(0);
-    strokeWeight(1);
-    noFill();
-
-
     for (let i = 0; i < kantonsgrenzen.features.length; i++) {
         let feature = kantonsgrenzen.features[i];
+
 
         if (feature.geometry.type === "Polygon") {
             drawPolygon(feature);
@@ -280,12 +333,11 @@ function drawCantons() {
 
         if (feature.geometry.type === "MultiPolygon") {
             drawMultiPolygon(feature);
-
         }
     }
 }
 
-
+// ---------------------------- Falls Polygon --------------------------------
 function drawPolygon(feature) {
     let rings = feature.geometry.coordinates;
     for (let r = 0; r < rings.length; r++) {
@@ -299,8 +351,7 @@ function drawPolygon(feature) {
     }
 }
 
-
-// Falls Typ des Objekts Mutliple Polygon
+// ---------------------------- Falls multiPolygon --------------------------------
 function drawMultiPolygon(feature) {
     for (let i = 0; i < feature.geometry.coordinates.length; i++) {
 
@@ -319,12 +370,13 @@ function drawMultiPolygon(feature) {
 
                 vertex(coords[0], coords[1]);
             }
-
             endShape(CLOSE);
         }
     }
 }
 
+
+// ---------------------------- Slider Funktion --------------------------------
 //current_year an Slider anpassen
 function updateCurrentYear() {
     current_year = slider.value();
