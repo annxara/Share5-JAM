@@ -1,0 +1,80 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #f0f0f0;
+}
+
+.viz-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    float: left;
+    width:100%;
+    flex-direction:column;
+}
+
+#canvas-container-geo{
+    width: 100%;
+    position: relative; /* statt absolute */
+}
+
+.btn{
+    z-index: 2;
+}
+
+.toolbar{
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    z-index: 10;
+}
+
+.btns-kantone{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    max-width: 80%;
+}
+
+#btn-kantonsgrenze{
+    flex-shrink: 0;
+}
+
+.slider {
+    appearance: none;
+    width: 50vw;
+    height: 2px;
+    background: #fd0000;
+    border: none;
+    z-index: 1000;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #fd0000;
+    border: none;
+}
+
+.slider-label,
+.slider-value-label {
+    z-index: 1000;
+    color: #fd0000;
+    font-family: sans-serif;
+    font-size: 14px;
+    pointer-events: none;
+}
+
+.slider-value-label {
+    transform: translateX(-50%);
+}
