@@ -1,0 +1,25 @@
+valueCategory,temporal,agegroup,agegroup_type,incValue,incValue_rounded
+cases_10y_mean,2022,0 - 16,agegroup_food,66.68,67.0
+cases_10y_mean,2022,17 - 24,agegroup_food,129.4,129.0
+cases_10y_mean,2022,25 - 44,agegroup_food,79.53,80.0
+cases_10y_mean,2022,45 - 64,agegroup_food,75.56,76.0
+cases_10y_mean,2022,65+,agegroup_food,102.75,103.0
+cases_10y_mean,2022,unknown,agegroup_food,,
+cases_10y_mean,2023,0 - 16,agegroup_food,64.56,65.0
+cases_10y_mean,2023,17 - 24,agegroup_food,125.16,125.0
+cases_10y_mean,2023,25 - 44,agegroup_food,77.21,77.0
+cases_10y_mean,2023,45 - 64,agegroup_food,74.7,75.0
+cases_10y_mean,2023,65+,agegroup_food,102.67,103.0
+cases_10y_mean,2023,unknown,agegroup_food,,
+cases_10y_mean,2024,0 - 16,agegroup_food,63.84,64.0
+cases_10y_mean,2024,17 - 24,agegroup_food,124.13,124.0
+cases_10y_mean,2024,25 - 44,agegroup_food,76.86,77.0
+cases_10y_mean,2024,45 - 64,agegroup_food,75.16,75.0
+cases_10y_mean,2024,65+,agegroup_food,104.28,104.0
+cases_10y_mean,2024,unknown,agegroup_food,,
+cases_10y_mean,2025,0 - 16,agegroup_food,63.93,64.0
+cases_10y_mean,2025,17 - 24,agegroup_food,124.94,125.0
+cases_10y_mean,2025,25 - 44,agegroup_food,77.3,77.0
+cases_10y_mean,2025,45 - 64,agegroup_food,76.64,77.0
+cases_10y_mean,2025,65+,agegroup_food,108.48,108.0
+cases_10y_mean,2025,unknown,agegroup_food,,
