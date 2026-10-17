@@ -53,7 +53,7 @@ const Layouts = {
       labels: columns.map(column => column.label),
       counts: columns.map(column => column.count),
       startIndex: seasonalityStart,
-      perRow: 12,
+      perRow: 10,
     });
   },
 
@@ -202,43 +202,51 @@ function unitChart(cases, area, { categories, labels, counts, startIndex = 0, pe
     }
   });
 
-  // Geometrie der beiden Spalten berechnen.
-  const labelSpace = 30;
+  // Geometrie der horizontalen Reihen berechnen.
+  const labelSpace = 70;
   const maxCount = Math.max(...[...groups.values()].map((g) => g.length));
-  const colWidth = area.w / categories.length;
-  const maxRows = Math.ceil(maxCount / perRow);
-  const spacing = Math.min(
-    (colWidth * 0.8) / perRow,
-    (area.h - labelSpace * 2) / maxRows
+  const availableWidth = area.w - labelSpace;
+  const defaultColumns = Math.ceil(maxCount / perRow);
+  const widthBasedColumns = Math.max(
+    1,
+    Math.floor(availableWidth / (DOT_SIZE * 1.5))
   );
-  const bottom = area.y + area.h - labelSpace;
+  const columns = Math.min(defaultColumns, widthBasedColumns);
+  const dotsPerColumn = Math.ceil(maxCount / columns);
+  const rowHeight = area.h / categories.length;
+  const spacing = Math.min(
+    availableWidth / columns,
+    (rowHeight * 0.8) / dotsPerColumn
+  );
+  const startX = area.x + labelSpace;
   const positions = new Array(cases.length);
   const chartLabels = [];
 
-  // Partikel innerhalb jeder Kategorie von unten nach oben stapeln.
+  // Partikel innerhalb jeder Kategorie von links nach rechts stapeln.
   categories.forEach((cat, k) => {
-    const centerX = area.x + (k + 0.5) * colWidth;
+    const centerY = area.y + (k + 0.5) * rowHeight;
     const group = groups.get(cat);
 
     group.forEach((particleIndex, j) => {
-      const col = j % perRow;
-      const row = Math.floor(j / perRow);
+      const col = Math.floor(j / dotsPerColumn);
+      const row = j % dotsPerColumn;
       positions[particleIndex] = {
-        x: centerX + (col - (perRow - 1) / 2) * spacing,
-        y: bottom - (row + 0.5) * spacing,
+        x: startX + (col + 0.5) * spacing,
+        y: centerY + (row - (perRow - 1) / 2) * spacing,
       };
     });
 
-    const rows = Math.ceil(group.length / perRow);
+    // Beschriftung der Säsonalitäts Balken
+    const labelX = area.x + labelSpace / 2;
     chartLabels.push({
-      text: labels[k],
-      x: centerX,
-      y: bottom + labelSpace * 0.6,
+      text: labels[k] + ":",
+      x: labelX,
+      y: centerY - 10,
     });
     chartLabels.push({
-      text: String(group.length),
-      x: centerX,
-      y: bottom - rows * spacing - 12,
+      text: String(group.length) + " Fälle",
+      x: labelX,
+      y: centerY + 10,
     });
   });
 

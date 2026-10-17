@@ -30,8 +30,8 @@ async function setup() {
     rectMode(CENTER, CENTER);
     const canvas = createCanvas(windowWidth, windowHeight);
     canvas.parent('canvas-container');
-    randomSeed(1);      // stabile Zuordnung, wenn random verwendet wird
-
+    
+    // Funktion um einzelne Layouts zu zeichnen
     buildLayouts();
 
     // Startpositionen zufällig verteilen; die Layouts übernehmen danach die Zielpositionen.
@@ -41,9 +41,7 @@ async function setup() {
     }));
 }
 
-// Zeichenfläche für die Diagramme, 
-// könnte auch fullsize canvas sein, 
-// hier nur Bereich der Canvas
+
 function chartArea() {
     // Der Diagrammbereich lässt an allen Seiten einen kleinen Rand frei.
     const w = windowWidth - windowWidth / 10;
@@ -87,11 +85,6 @@ function buildLayouts() {
         return layoutFunction(CASES, area, layoutData, visibleCount, secondaryCount);
     });
 
-
-
-
-
-
     // Beim Wechsel von change zu seasonality bleiben Saisonalitäts-Partikel unten,
     // während die überschüssigen Aktualitäts-Partikel nach oben wegfliegen.
     intermediateLayouts = {
@@ -123,6 +116,10 @@ function draw() {
     //state.progress 0 bis 1
     //ease() sorgt für sanfte Beschleunigung/Abbremsung, sonst linear
     //ease() ist eine Funktion, die auf GSAP 'power2.inOut' zurückgreift, siehe Zeile 7
+
+    // Die Hintergrundzahl liegt unter den Partikeln und wird mit dem Layout überblendet.
+    drawBackgroundNumber(lastLayoutName, 1 - particleProgress);
+    drawBackgroundNumber(currentLayoutName, particleProgress);
 
     // Jedes Partikel wird zwischen seinem alten und neuen Ziel interpoliert.
     noStroke();
@@ -164,8 +161,28 @@ function drawLabels(labels, alpha) {
     if (alpha <= 0) return;
     fill(255, alpha * 255);
     textAlign(CENTER, CENTER);
-    textSize(12);
+    textSize(15);
     labels.forEach((l) => text(l.text, l.x, l.y));
+}
+
+function drawBackgroundNumber(layoutName, alpha) {
+    if (alpha <= 0 || !['total', 'change'].includes(layoutName)) return;
+
+    const number = layoutName === 'total'
+        ? String(getParticleCount(data))
+        : getChangeText(data);
+    const area = chartArea();
+    const maxWidth = area.w * 0.9;
+
+    noFill();
+    stroke(255, alpha * 255)
+    textAlign(CENTER, CENTER);
+    textStyle(BOLD);
+    textSize(area.h * 0.6);
+    if (textWidth(number) > maxWidth) {
+        textSize(textSize() * (maxWidth / textWidth(number)));
+    }
+    text(number, width / 2, height / 2);
 }
 
 function drawInfo(layoutName, alpha) {
@@ -175,18 +192,24 @@ function drawInfo(layoutName, alpha) {
     const topic = INFO_TOPICS[layoutName];
     if (!topic) return;
 
+    // Infotext Positionierung
+    // Berechnung der Transparent für Übergang
     fill(255, alpha * 255);
-    textAlign(CENTER, TOP);
+    textAlign(CENTER, CENTER);
     textSize(18);
     textLeading(24);
+    const infoY = layoutName === 'seasonality'
+        ? height * 0.5
+        : height * 0.77;
     text(
         getTopicInfo(data, topic),
         width / 2,
-        height * 0.08,
+        infoY,
         width * 0.8
     );
 }
 
+// Responsiveness
 function windowResized() {
     // Bei einer Größenänderung werden Canvas und Zielpositionen neu berechnet.
     resizeCanvas(windowWidth, windowHeight);
