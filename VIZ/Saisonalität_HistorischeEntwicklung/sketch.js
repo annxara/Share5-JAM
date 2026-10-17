@@ -12,6 +12,8 @@ let current_data;
 let max_data;
 let max_100;
 let median_data;
+let current_data_max;
+let current_data_max_data;
 
 // Array für Beschriftung der Monate
 let months = ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"];
@@ -38,6 +40,10 @@ let mean_isvisible = false;
 let aktuell_isvisible = false;
 let historisch_isvisible = true;
 let sais_isvisible = true;
+
+// Text für Legende
+let legende_text_sais_1 = "Umso grösser der Kreis, desto mehr"
+let legende_text_sais_2 = "Fälle im Vergleich zum restlichem Jahr"
 
 
 async function setup() {
@@ -69,12 +75,23 @@ async function setup() {
     // Herauslesen des Höchsten Wertes, um Grafik zu skalieren
     max_data = d3.max(data_historisch, d => d.value);
 
+    // Herauslesen der restlichen Daten des höchsten Wertes
+    max_data_data = data_historisch.filter(
+        d => d.value == max_data
+    );
+
     // Berechnung der Anzahl 100er Abschnitte --> für 100er Abschnitte
     max_100 = ceil(max_data / 100);
 
     // Auslesen der Daten des aktuell angezeigten Jahres
     current_data = data_historisch.filter(
         d => d.year == current_year
+    );
+
+    // Auslesen des Aktuell höchsten Wertes
+    current_data_max = d3.max(current_data, d => d.value);
+    current_data_max_data = current_data.filter(
+        d => d.value == current_data_max
     );
 
     // Auslesen der Daten für das Aktuelle Jahr
@@ -312,7 +329,29 @@ function draw() {
         }
         // Wenn Saisonalität sichtbar werden Kreise gezeichnet
         if(sais_isvisible){
+            // ---------------------------- Saisonalität --------------------------------
             ellipse(x, pos_y_historisch, size, size);
+
+            // ---------------------------- Legende --------------------------------
+            // Legende für Saisonalität --> immer bei oberstem Punkt
+            if(i == 1){
+                push();
+                let rect_width = textWidth(legende_text_sais_1);
+                let legende_x_sais = month_step * (current_data_max_data[0].month + 1);
+                let legende_y_sais = start_100 - current_data_max_data[0].value * historisch_height_1;
+                
+                textAlign(LEFT);
+                text(legende_text_sais_1, legende_x_sais + 54, legende_y_sais - 82);
+                text(legende_text_sais_2, legende_x_sais + 54, legende_y_sais - 67);
+                rect(legende_x_sais + 155, legende_y_sais - 57, rect_width + 30, 1);
+
+                push();
+                translate(legende_x_sais + 125 - rect_width/2, legende_y_sais - 40);
+                rotate(40);
+                rect( 0, 0, rect_width / 5 + 4, 1);
+                pop();
+                pop();
+            }
         }
         
         // Beschriftung des Jahres
@@ -385,6 +424,13 @@ function updateCurrentYear() {
     // Neufiltern der Daten nach angezeigtem Jahr
     current_data = data_historisch.filter(
         d => d.year == current_year
+    );
+
+    // Herauslesen des Maximalwertes für Legende
+    current_data_max = d3.max(current_data, d => d.value);
+
+    current_data_max_data = current_data.filter(
+        d => d.value == current_data_max
     );
 }
 

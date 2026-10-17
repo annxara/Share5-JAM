@@ -22,7 +22,7 @@ let circles_geo = [];
 
 
 // Annordnen der Kreise (Abstand)
-let step = 15;
+let step = 13;
 
 // Array für Kreisgrössen
 let geo_size = [5.00, 5.75, 6.60, 7.59, 8.72, 10.02, 11.52, 13.24, 15.22, 17.49, 20.10, 23.10, 26.53, 30.48, 35.02, 40.00];
@@ -85,7 +85,14 @@ async function setup() {
         .translate([width / 2, height / 2])
         .scale(width * 8);
 
+    // ---------------------------- Visualisierung--------------------------------    
     buildCantonPolygons();
+    // Sortieren der Kantone nach Grösse (von klein nach gross --> kleinere Kantone werden zuerst erkannt)
+    cantonPolygons.sort(
+        (a, b) =>
+            polygonArea(a.polygon) -
+            polygonArea(b.polygon)
+    );
     createCircleGrid();
 
     // ---------------------------- Slider --------------------------------
@@ -166,8 +173,10 @@ function draw() {
                 fill(fill_color_highlight);
                 // Text für Anzahl Fälle des ausgewählten Kantons
                 push();
+                textSize(14);
+                textFont(fontStyleBold);
                 textAlign(LEFT, CENTER);
-                text(current_canton_circle.georegion + ": " + current_canton_circle.incValue, 20, height / 2);
+                text(current_canton_circle.georegion + ": " + round(current_canton_circle.incValue) + " Fälle", 20, height / 4*3);
                 pop();
             } else {
                 noStroke();
@@ -186,19 +195,16 @@ function draw() {
         // ---------------------------- Legende --------------------------------
         if (i == 0) {
             push();
+            fill(fill_color);
             let this_circle_size = 17.5;
             let rect_width = textWidth(legende_text_geo_1);
-            translate(circle.x, circle.y);
+            translate(circle.x, circle.y - 15);
 
             textAlign(LEFT);
+            textSize(14);
             text(legende_text_geo_1, 90, -this_circle_size * 3);
             text(legende_text_geo_2, 90, -this_circle_size * 2);
-            rect(
-                rect_width - 35,
-                -this_circle_size * 1.5,
-                rect_width + 30,
-                1
-            );
+            rect(rect_width - 13, -this_circle_size * 1.5, rect_width + 76, 1);
             push();
             rotate(-45);
             rect( this_circle_size * 2, this_circle_size, rect_width / 5, 1);
@@ -212,10 +218,10 @@ function draw() {
 
     // ---------------------------- Button --> Kantonsgrenze --------------------------------
     if (kantonsgrenzen_isvisible) {
-        fill(255, 110);
+        fill(255, 150);
         //noFill();
         stroke(fill_color);
-        strokeWeight(1.5);
+        strokeWeight(2);
         drawCantons();
     }
 }
@@ -319,6 +325,19 @@ function pointInPolygon(px, py, polygon) {
     }
 
     return inside;
+}
+
+// Berechnen der Flächengrösse --> um AI & AR zu bevorzugen (vor St. Gallen)
+function polygonArea(poly) {
+    let area = 0;
+
+    for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+        area +=
+            (poly[j][0] + poly[i][0]) *
+            (poly[j][1] - poly[i][1]);
+    }
+
+    return Math.abs(area);
 }
 
 // ---------------------------- Zeichnen der Kantongrenzen --------------------------------
