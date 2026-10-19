@@ -134,3 +134,22 @@ header,
   margin-left: auto;
   margin-right: auto;
 }
+
+/* Im Datenmodus bekommt die Sidebar ihren eigenen Flex-Bereich. */
+.scrolly-layout.data-mode {
+  display: flex;
+  align-items: stretch;
+}
+
+.scrolly-layout.data-mode > .sidebar {
+  position: sticky;
+  top: 0;
+  left: auto;
+  flex: 0 0 400px;
+  width: 400px;
+}
+
+.scrolly-layout.data-mode > .data-content {
+  flex: 1 1 auto;
+  min-width: 0;
+}

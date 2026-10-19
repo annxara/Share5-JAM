@@ -127,7 +127,6 @@ body {
 
 .orange-section {
     background: #f58220;
-    padding: 0;
     min-height: calc(100vh - 220px); /* Adjust based on the height of the header and other elements */
 }
 
@@ -147,6 +146,7 @@ body {
     position: sticky;
     top: 0;
     width: 400px;
+    flex: 0 0 400px;
     background: #fff;
     border-right: 1px solid #ddd;
     align-self: flex-start;
@@ -158,8 +158,44 @@ body {
     background: #f58220;
 }
 
+.data-content {
+    flex: 1;
+    min-width: 0;
+    min-height: 700px;
+    padding: 30px 44px 60px;
+    background: #f58220;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+.data-card {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 520px;
+    margin: 0 auto 32px;
+    padding: 24px 28px;
+    background: #fff;
+    border: 1px solid #222;
+}
+
+.data-card:last-child {
+    margin-bottom: 0;
+}
+
+.data-card h2 {
+    margin: 0 0 20px;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #222;
+    font-family: "noto-sans", sans-serif;
+}
+
+.visualization-slot {
+    min-height: 420px;
+}
+
 .sidebar-link {
-    padding: 8px 16px;
     border-top: 1px solid #9a9a9a;
     font-size: 20px;
     cursor: pointer;
@@ -172,7 +208,6 @@ body {
 .disease-group {
     list-style: none;
     margin: 0;
-    padding: 0;
 }
 
 .disease-group li {
@@ -185,8 +220,7 @@ body {
     line-height: 1.15;
     color: #222;
     font-family: "noto-sans", sans-serif;
-    padding-left: 18px;
-    padding-right: 18px;
+    padding-right: 18px; /* Platz für den Pfeil, der die Untermenüs aufklappt. */
     margin: 0;
 }
 
@@ -196,9 +230,8 @@ body {
     line-height: 1.5;
     color: #222;
     font-family: "noto-sans", sans-serif;
-    padding-left: 18px;
     padding-right: 18px;
-    margin: 0 0 12px;
+    margin: 0 0 12px; /* Abstand nach unten, um die Untermenüs nicht zu überlappen. */
 }
 
 .disease-group:not(.active) p,
@@ -224,6 +257,11 @@ body {
     flex-shrink: 0;
     margin-left: 20px;
 }
+/* Dreht den Pfeil nach unten, wenn die Gruppe aktiv ist. */
+.disease-group:not(.active) .marker {
+    transform: rotate(180deg);
+}
+
 
 .disease-group.active {
     padding-top: 4px;
@@ -232,22 +270,20 @@ body {
 .disease-group h2 {
     font-weight: 400;
     margin-bottom: 8px;
-    padding-left: 65px;
+    padding-left: 53px;
 }
 
 .disease-group p {
     margin-bottom: 12px;
-    padding-left: 110px;
+    padding-left: 100px;
 }
 
 .disease-submenu {
     list-style: none;
     margin: 0;
-    padding: 0;
 }
 
 .disease-submenu .sidebar-link {
-    padding: 8px 16px;
     border-top: 1px solid #9a9a9a;
     font-size: 20px;
     font-weight: 400;
@@ -264,7 +300,6 @@ body {
 }
 
 .disease-submenu .sidebar-link.active {
-    background: #f0f0f0;
     font-weight: 400;
     margin-left: 100px;
 }
@@ -273,16 +308,40 @@ body {
     display: none;
     list-style: none;
     margin: 0;
-    padding: 0;
+
 }
 
 .disease-submenu .data-toggle.active .data-submenu {
     display: block;
 }
 
-.data-submenu .sidebar-link {
-    margin-left: 120px;
-    font-size: 18px;
+.disease-submenu > .data-toggle > .data-submenu > .sidebar-link,
+.disease-submenu > .data-toggle > .data-submenu > .sidebar-link.active {
+    margin-left: 0;
+    padding-left: 0px;
+}
+
+.data-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.data-marker {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-image: url("../assets/images/pfeil-share5.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    flex-shrink: 0;
+    transform: rotate(90deg);
+    margin-right: 10px;
+}
+
+.data-toggle.active .data-marker {
+    transform: rotate(180deg);
 }
 
 .more-info {
@@ -301,12 +360,31 @@ body {
     .sidebar {
         position: static;
         width: 100%;
+        flex: 0 0 100%;
         border-right: none;
         border-bottom: 1px solid #ddd;
     }
 
     .scrolly-content {
         min-height: 800px;
+    }
+
+    .data-content {
+        min-height: 0;
+        padding: 20px 16px 40px;
+    }
+
+    .data-card {
+        min-height: 420px;
+        padding: 20px 16px;
+    }
+
+    .data-card h2 {
+        font-size: 20px;
+    }
+
+    .visualization-slot {
+        min-height: 320px;
     }
 }
 

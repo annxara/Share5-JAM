@@ -60,7 +60,10 @@
                         <ul class="disease-submenu">
                             <li class="sidebar-link active">Übersicht</li>
                             <li class="sidebar-link data-toggle">
-                                Daten
+                                <span class="data-heading">
+                                    Daten
+                                    <span class="data-marker" aria-hidden="true"></span>
+                                </span>
                                 <ul class="data-submenu">
                                     <li class="sidebar-link">Historische Entwicklung &amp; Saisonalität</li>
                                     <li class="sidebar-link">Krankheitstypen</li>
@@ -147,6 +150,33 @@
         </div>
         <div id="debug-value">100 %</div>
     </aside>
+</div>
+
+<div class="data-content" id="data-content" hidden>
+    <article class="data-card" id="data-seasonality">
+        <h2>Saisonalität + Historische Entwicklung</h2>
+        <div class="visualization-slot"></div>
+    </article>
+
+    <article class="data-card" id="data-types">
+        <h2>Krankheitstypen</h2>
+        <div class="visualization-slot"></div>
+    </article>
+
+    <article class="data-card" id="data-age">
+        <h2>Altersverteilung</h2>
+        <div class="visualization-slot"></div>
+    </article>
+
+    <article class="data-card" id="data-geography">
+        <h2>Geografische Verteilung</h2>
+        <div class="visualization-slot"></div>
+    </article>
+
+    <article class="data-card" id="data-gender">
+        <h2>Geschlechtliche Verteilung</h2>
+        <div class="visualization-slot"></div>
+    </article>
 </div>
 
 
