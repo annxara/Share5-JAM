@@ -247,8 +247,8 @@ body {
 }
 
 .marker {
-    width: 16px;
-    height: 16px;
+    width: 25px;
+    height: 25px;
     display: inline-block;
     background-image: url("../assets/images/pfeil-share5.svg");
     background-repeat: no-repeat;
@@ -270,7 +270,7 @@ body {
 .disease-group h2 {
     font-weight: 400;
     margin-bottom: 8px;
-    padding-left: 53px;
+    padding-left: 45px;
 }
 
 .disease-group p {
@@ -329,8 +329,8 @@ body {
 
 .data-marker {
     display: inline-block;
-    width: 10px;
-    height: 10px;
+    width: 16px;
+    height: 16px;
     background-image: url("../assets/images/pfeil-share5.svg");
     background-repeat: no-repeat;
     background-position: center;

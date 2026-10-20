@@ -8,6 +8,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const dataContent = document.querySelector('#data-content');
     const scrollyLayout = document.querySelector('.scrolly-layout');
 
+    function setDataMenu(open) {
+        if (!dataToggle) {
+            return;
+        }
+
+        dataToggle.classList.toggle('active', open);
+        dataToggle.setAttribute('aria-expanded', String(open));
+    }
+
     function setView(view) {
         const showData = view === 'data';
 
@@ -22,10 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (scrollyLayout) {
             scrollyLayout.classList.toggle('data-mode', showData);
         }
-
-        if (dataToggle) {
-            dataToggle.setAttribute('aria-expanded', String(showData));
-        }
     }
 
     if (salmonHeader) {
@@ -37,10 +42,20 @@ document.addEventListener('DOMContentLoaded', () => {
     salmonLinks.forEach((link) => {
         link.addEventListener('click', (event) => {
             event.preventDefault();
+            const shouldOpenDataMenu = link === dataToggle
+                ? !dataToggle.classList.contains('active')
+                : false;
+
             salmonLinks.forEach((item) => item.classList.toggle('active', item === link));
             dataLinks.forEach((item) => item.classList.remove('active'));
 
-            setView(link === dataToggle ? 'data' : 'scrolly');
+            if (link === dataToggle) {
+                setDataMenu(shouldOpenDataMenu);
+                setView('data');
+            } else {
+                setDataMenu(false);
+                setView('scrolly');
+            }
         });
     });
 
@@ -50,6 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
             event.stopPropagation();
             salmonLinks.forEach((item) => item.classList.toggle('active', item === dataToggle));
             dataLinks.forEach((item) => item.classList.toggle('active', item === link));
+            setDataMenu(true);
             setView('data');
         });
     });

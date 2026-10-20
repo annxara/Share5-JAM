@@ -7,6 +7,7 @@
     
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/scrolly.css?v=5">
+    <link rel="stylesheet" href="css/overview.css">
     <link rel="stylesheet" href="https://use.typekit.net/web2swg.css">
     <script src="js/p5.js"></script>
     
@@ -42,8 +43,19 @@
     </p>
 </section>
 
+
+<!-- OVERVIEW PART -->
+<section class="overview-content" id="overview-content">
+    <div class="overview-chart" id="canvas-container-salmonellose"></div>
+    <div class="overview-chart" id="canvas-container-campylobacteriose"></div>
+    <div class="overview-chart" id="canvas-container-shigellose"></div>
+    <div class="overview-chart" id="canvas-container-ehec"></div>
+</section>
+
+
+<!-- SCROLLYTELLING PART -->
 <section class="orange-section">
-    <div class="orange-section-inner">
+        <div class="orange-section-inner">
         <section class="scrolly-layout">
             <aside class="sidebar">
                 <ul class="disease-group salmonellose active">
@@ -184,6 +196,7 @@
     </div>
 </section>
 
+<script src="visualizations/overview/overview-sketch.js"></script>
 <script src="js/navigation.js"></script>
 
 <script src="https://d3js.org/d3.v7.min.js"></script>
