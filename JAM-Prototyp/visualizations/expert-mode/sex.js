@@ -28,24 +28,33 @@ async function setup() {
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
 }
-//prüft, ob der mauszeiger auf einem typ der aktuellen daten ist
-//wenn ja, wird der ausgewählte typ auf den index des typs gesetzt
-//wenn nein, wird der ausgewählte typ auf -1 gesetzt
-function mousePressed() {
+
+// Gibt den Index des Bereichs unter dem Mauszeiger zurück (-1, wenn keiner).
+// Wird sowohl für den Klick als auch für den Hover (Hand-Cursor) verwendet,
+// damit beide exakt dieselben klickbaren Flächen haben:
+// - die Segmente des Rechtecks
+// - die Prozent-Labels oben
+// - die Typ-Labels unten
+function getHoveredTypeIndex() {
+    if (!is_initialized) {
+        return -1;
+    }
+
     const rectangleWidth = min(width - 40, 900);
     const rectangleTop = height / 2 - 60;
     const rectangleBottom = height / 2 + 60;
     const rectangleLeft = width / 2 - rectangleWidth / 2;
     const onePercent = rectangleWidth / 100;
-    //cumulativePercentage ist die summe der prozente der aktuellen daten
+
+    // cumulativePercentage ist die summe der prozente der aktuellen daten
     // muss zusammen mit onePercent multipliziert werden, um die x-position der linien zu berechnen
     let cumulativePercentage = 0;
     const segmentLinePositions = [];
 
-    //prüft, ob der mauszeiger auf einem typ der aktuellen daten ist
+    // 1) prüft, ob der mauszeiger auf einem segment des rechtecks ist
     for (let i = 0; i < current_data.length; i++) {
         const areaStartPercentage = cumulativePercentage;
-        //berechnet die kumulierte prozentzahl der aktuellen daten
+        // berechnet die kumulierte prozentzahl der aktuellen daten
         cumulativePercentage += current_data[i].prct;
         const areaStart = rectangleLeft + areaStartPercentage * onePercent;
         const areaEnd = rectangleLeft + cumulativePercentage * onePercent;
@@ -57,13 +66,13 @@ function mousePressed() {
             && mouseX >= areaStart
             && mouseX <= areaEnd
         ) {
-            //wenn der mauszeiger auf einem typ der aktuellen daten ist, wird der ausgewählte typ auf den index des typs gesetzt
-            selected_type_index = selected_type_index === i ? -1 : i;
-            return;
+            return i;
         }
     }
 
-    //prüft, ob der mauszeiger auf einem typ label oder prozent label ist
+    // 2) prüft, ob der mauszeiger auf einem typ label oder prozent label ist
+    // push/pop, damit die textSize-Änderung den Rest nicht beeinflusst
+    push();
     const typeLabelLayout = getTypeLabelLayout(
         current_data,
         rectangleLeft,
@@ -71,42 +80,50 @@ function mousePressed() {
     );
     textSize(typeLabelLayout.labelSize);
 
-    //durchläuft alle typen und prüft, ob der mauszeiger auf einem typ label oder prozent label ist
     for (let i = 0; i < current_data.length; i++) {
         const typeLabelY = rectangleBottom
             // +5 ist der abstand zwischen dem rechteck und dem typ label
             + 5
             + typeLabelLayout.rowIndexes[i] * typeLabelLayout.rowGap;
-        //berechnet die breite des typ labels
+        // berechnet die breite des typ labels
         const typeLabelWidth = textWidth(current_data[i].sex);
-        //prüft, ob der mauszeiger auf einem typ label ist
-        const clickedTypeLabel =
+
+        // prüft, ob der mauszeiger auf einem typ label ist
+        const onTypeLabel =
             mouseX >= typeLabelLayout.positions[i] - typeLabelWidth
-            //prüft, ob der mauszeiger auf einem prozent label ist
             && mouseX <= typeLabelLayout.positions[i]
-            // prüft, ob der mauszeiger auf einem typ label ist
             && mouseY >= typeLabelY
-            // prüft, ob der mauszeiger auf einem typ label ist
             && mouseY <= typeLabelY + typeLabelLayout.labelSize * 1.2;
 
-        //prüft, ob der mauszeiger auf einem prozent label ist
+        // prüft, ob der mauszeiger auf einem prozent label ist
         const percentageLabelY = rectangleTop - 5;
-        //berechnet die breite des prozent labels
-        const clickedPercentageLabel =
+        const onPercentageLabel =
             mouseX >= segmentLinePositions[i] - textWidth(
                 `${current_data[i].prct.toFixed(1)} %`
             )
             && mouseX <= segmentLinePositions[i]
             && mouseY <= percentageLabelY
             && mouseY >= percentageLabelY - typeLabelLayout.labelSize;
-        //prüft, ob der mauszeiger auf einem typ label oder prozent label ist
-        if (clickedTypeLabel || clickedPercentageLabel) {
-            selected_type_index = selected_type_index === i ? -1 : i;
-            return;
+
+        if (onTypeLabel || onPercentageLabel) {
+            pop();
+            return i;
         }
     }
+    pop();
+
+    return -1;
 }
-//berechnet die positionen der typen labels und die größe der labels
+
+// Klick: wählt den bereich unter der maus aus bzw. wieder ab
+function mousePressed() {
+    const i = getHoveredTypeIndex();
+    if (i >= 0) {
+        selected_type_index = selected_type_index === i ? -1 : i;
+    }
+}
+
+// berechnet die positionen der typen labels und die größe der labels
 function getTypeLabelLayout(data, rectangleLeft, rectangleWidth) {
     const labelSize = 16;
     const rowGap = 22;
@@ -136,6 +153,10 @@ function draw() {
     }
 
     background("white");
+
+    // Hover: Hand-Cursor, wenn die Maus über einem klickbaren Bereich ist
+    const hovered_index = getHoveredTypeIndex();
+    cursor(hovered_index >= 0 ? HAND : ARROW);
 
     //rechteck
     rectMode(CENTER);
@@ -212,6 +233,9 @@ function draw() {
         cumulativePercentage += areaPercentage;
         const lineX = rectangleLeft + cumulativePercentage * onePercent;
 
+        // orange, wenn der bereich ausgewählt ist ODER die maus darüber ist
+        const isHighlighted = i === selected_type_index || i === hovered_index;
+
         //zeichnet die linie für die zusammengerechnete prozentzahl
         line(
             lineX,
@@ -222,14 +246,12 @@ function draw() {
 
         //zeichnet die prozentzahl und den type
         noStroke();
-        fill(i === selected_type_index ? "#F77F1B" : "black");
+        fill(isHighlighted ? "#F77F1B" : "black");
         textAlign(LEFT, BOTTOM);
         textSize(16);
         const percentageLabel = `${areaPercentage.toFixed(1)} %`;
         text(
             //zeigt die prozentzahl an
-            //rundet auf ganze prozente
-            //toFixed(0) rundet auf 0 nachkommastellen
             percentageLabel,
             lineX - textWidth(percentageLabel),
             rectangleY - rectangleHeight / 2 - 5
@@ -239,7 +261,7 @@ function draw() {
         textAlign(RIGHT, TOP);
         textSize(typeLabelLayout.labelSize);
         const isSelected = i === selected_type_index;
-        fill(isSelected ? "#F77F1B" : "black");
+        fill(isHighlighted ? "#F77F1B" : "black");
         textStyle(isSelected ? BOLD : NORMAL);
         const sharedLabelX = typeLabelLayout.positions[i];
         const typeLabelY = rectangleY + rectangleHeight / 2 + 5
