@@ -101,6 +101,19 @@ p {
     z-index: 10;
 }
 
+.title-oblig {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.title-oblig img {
+    height: 60px;        /* nach Bedarf anpassen */
+    width: auto;
+    cursor: default;
+}
+
 /* ---------- Buttons ---------- */
 .btn {
     z-index: 2;
