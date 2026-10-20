@@ -3,21 +3,25 @@ const charts = [
         id: 'canvas-container-salmonellose',
         name: 'Salmonellose',
         count: 555,
+        numberPosition: { x: 0.66, y: 0.5 }
     },
     {
         id: 'canvas-container-campylobacteriose',
         name: 'Campylobacteriose',
         count: 1392,
+        numberPosition: { x: 0.33, y: 0.5 }
     },
     {
         id: 'canvas-container-shigellose',
         name: 'Shigellose',
         count: 27,
+        numberPosition: { x: 0.66, y: 0.5 }
     },
     {
         id: 'canvas-container-ehec',
         name: 'EHEC',
         count: 261,
+        numberPosition: { x: 0.33, y: 0.5 }
     },
 ];
 
@@ -37,7 +41,7 @@ function createChart(config) {
             // Definieren des Containers für Krankheiten
             container = document.getElementById(config.id);
             // Setzen der Größe des Canvas und das Layout
-            const {width, height} = getCanvasSize();
+            const { width, height } = getCanvasSize();
             // Erstellen der Canvas
             p.createCanvas(width, height).parent(container);
             // Anzahl Fälle definieren
@@ -56,13 +60,14 @@ function createChart(config) {
             // Zahlen hinter Particle
             p.noStroke();
             p.noFill()
-            p.fill(255,60);
+            p.fill(255, 60);
             p.strokeWeight(1);
             p.textAlign(p.CENTER, p.CENTER);
             p.textStyle(p.BOLD);
             // Verknüpfung der Textgrössen mit Grösse der dargestellten Zahle (responsive)
             p.textSize(getNumberTextSize());
-            p.text(String(config.count), p.width / 2, p.height / 2);
+            const numberPosition = getNumberPosition(p, config);
+            p.text(String(config.count), numberPosition.x, numberPosition.y);
 
             p.noStroke();
             p.fill(255);
@@ -81,7 +86,7 @@ function createChart(config) {
             p.textStyle(p.NORMAL);
             // Berechnung der Grösse
             p.textSize(Math.max(14, Math.min(22, p.width * 0.025)));
-            p.text(config.name, p.width / 2, p.height * 0.75);
+            p.text(config.name, numberPosition.x, numberPosition.y * 1.5);
         };
 
         // Funktion um Canvas-Grösse neuzuberechnen
@@ -112,7 +117,9 @@ function createChart(config) {
             graphics.textAlign(p.CENTER, p.CENTER);
             graphics.textStyle(p.BOLD);
             graphics.textSize(getNumberTextSize());
-            graphics.text(String(config.count), graphics.width / 2, graphics.height / 2);
+            const numberPosition = getNumberPosition(graphics, config);
+
+            graphics.text(String(config.count), numberPosition.x, numberPosition.y);
 
             graphics.loadPixels();
             const candidates = [];
@@ -132,6 +139,13 @@ function createChart(config) {
             visible = cases.map((_, index) => index < config.count);
         }
     });
+}
+
+function getNumberPosition(canvas, config) {
+    return {
+        x: canvas.width * config.numberPosition.x,
+        y: canvas.height * config.numberPosition.y,
+    };
 }
 
 charts.forEach(createChart);
