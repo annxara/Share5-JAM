@@ -8,6 +8,7 @@
     <script src="../../js/p5.js"></script>
     <script src="../../js/d3.js"></script>
     <script src="age.js"></script>
+    <script src="../../assets/images/oblig-button.svg"></script>
     
 </head>
 <body>
@@ -15,19 +16,22 @@
     <div class="viz-container">
 
         <div class="toolbar">
-            <h2>Altersverteilung</h2>
+            <div class="title-oblig">
+                <h2>Altersverteilung</h2>
+                <img src="../../assets/images/oblig-button.svg" alt="Obligatorisch">
+            </div>
             <p> Fälle pro 100'000 EinwohnerInnen in der Altersklasse (Stand 2025) </p>
+
             <br>
             <div class="btn-row">
                 <input type="button" class="btn" id="btn-age-anzahl-auf" value="Anzahl (aufsteigend)">
                 <input type="button" class="btn" id="btn-age-anzahl-ab" value="Anzahl (absteigend)">
                 <input type="button" class="btn active" id="btn-age-alter-auf" value="Alter (aufsteigend)">
                 <input type="button" class="btn" id="btn-age-alter-ab" value="Alter (absteigen)">
-            </div>
 
+            </div>
         </div>
 
-        
 
         <div id="canvas-container-age"></div>
 
@@ -37,6 +41,7 @@
         </div>
 
 
+        
     </div>
 </body>
 </html>
