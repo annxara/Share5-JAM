@@ -111,6 +111,7 @@ body {
 .page-intro {
     position: sticky;
     top: 0;
+    z-index: 20;          /* fehlt bei dir */
     padding: 24px 24px 16px;
     background: #fff;
 }
@@ -153,12 +154,10 @@ body {
 .sidebar {
     position: sticky;
     top: var(--intro-h);
-    width: 400px;
-    flex: 0 0 400px;
-    background: #fff;
-    border-right: 1px solid #ddd;
-    align-self: flex-start;
-    margin-left: 0;
+    z-index: 10;          /* fehlt bei dir */
+    max-height: calc(100vh - var(--intro-h));
+    overflow-y: auto;
+    /* ...Rest wie bisher */
 }
 
 .scrolly-content {
@@ -417,14 +416,6 @@ body {
         font-size: 14px;
     }
 
-    .sidebar {
-        position: sticky;
-        top: var(--intro-h);
-        width: 300px;
-        background: #fff;
-        border-right: none;
-        border-bottom: 1px solid #ddd;
-    }
 
     .disease-group h2 {
         font-size: 22px;

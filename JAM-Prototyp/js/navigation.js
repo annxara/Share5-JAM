@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     updateIntroHeight();
+
     if (intro) new ResizeObserver(updateIntroHeight).observe(intro);
 
     function setDataMenu(open) {
