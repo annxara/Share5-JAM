@@ -115,6 +115,8 @@ body {
     z-index: 20;
     padding: 24px 24px 16px;
     background: #fff;
+    border-bottom: solid 1px;
+    border-color: #181717;
 }
 
 .page-intro h1 {
@@ -164,6 +166,9 @@ body {
     background: #fff;
     border-right: 1px solid #ddd;
     margin-left: 0;
+    border-right: solid 1px;
+    border-bottom: solid 1px;
+    border-color: #181717;
 }
 
 .scrolly-content {
@@ -179,6 +184,7 @@ body {
     background: #fff;
     box-sizing: border-box;
     overflow-x: hidden;
+
 }
 
 .data-card {
