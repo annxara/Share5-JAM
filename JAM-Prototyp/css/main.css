@@ -37,6 +37,7 @@ body {
     font-weight: 400;
     font-style: normal;
 }
+
 /* Obere Behördenleiste */
 /* Logo- und Titelbereich */
 /* Hauptnavigation */
@@ -78,10 +79,10 @@ body {
     padding: 14px 24px;
     background: #fff;
     border-bottom: 1px solid #e3e3e3;
-    font-size:15px;
+    font-size: 15px;
 }
 
-.mainnav a{
+.mainnav a {
     text-decoration: none;
     color: #333;
     padding-bottom: 6px;
@@ -126,8 +127,9 @@ body {
 }
 
 .orange-section {
-    background: #f58220;
-    min-height: calc(100vh - 220px); /* Adjust based on the height of the header and other elements */
+    background: #ffffff;
+    min-height: calc(100vh - 220px);
+    /* Adjust based on the height of the header and other elements */
 }
 
 .orange-section-inner {
@@ -155,7 +157,7 @@ body {
 
 .scrolly-content {
     flex: 1;
-    background: #f58220;
+    background: #fff;
 }
 
 .data-content {
@@ -163,7 +165,7 @@ body {
     min-width: 0;
     min-height: auto;
     padding: 30px 44px 60px;
-    background: #f58220;
+    background: #fff;
     box-sizing: border-box;
     overflow-x: hidden;
 }
@@ -220,7 +222,8 @@ body {
     line-height: 1.15;
     color: #222;
     font-family: "noto-sans", sans-serif;
-    padding-right: 18px; /* Platz für den Pfeil, der die Untermenüs aufklappt. */
+    padding-right: 18px;
+    /* Platz für den Pfeil, der die Untermenüs aufklappt. */
     margin: 0;
 }
 
@@ -231,7 +234,8 @@ body {
     color: #222;
     font-family: "noto-sans", sans-serif;
     padding-right: 18px;
-    margin: 0 0 12px; /* Abstand nach unten, um die Untermenüs nicht zu überlappen. */
+    margin: 0 0 12px;
+    /* Abstand nach unten, um die Untermenüs nicht zu überlappen. */
 }
 
 .disease-group:not(.active) p,
@@ -257,6 +261,7 @@ body {
     flex-shrink: 0;
     margin-left: 20px;
 }
+
 /* Dreht den Pfeil nach unten, wenn die Gruppe aktiv ist. */
 .disease-group:not(.active) .marker {
     transform: rotate(180deg);
@@ -315,8 +320,8 @@ body {
     display: block;
 }
 
-.disease-submenu > .data-toggle > .data-submenu > .sidebar-link,
-.disease-submenu > .data-toggle > .data-submenu > .sidebar-link.active {
+.disease-submenu>.data-toggle>.data-submenu>.sidebar-link,
+.disease-submenu>.data-toggle>.data-submenu>.sidebar-link.active {
     margin-left: 0;
     padding-left: 0px;
 }
@@ -444,6 +449,35 @@ body {
     height: 100%;
     min-height: 420px;
     border: 0;
+}
+
+.site-footer {
+    background: #2f3a45;
+    color: #e6e9ec;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.footer-inner {
+    max-width: 1100px;
+    margin: 0 ;
+    padding: 24px;
+}
+
+.footer-legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 32px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+@media (max-width: 520px) {
+    .footer-legal {
+        flex-direction: column;
+        gap: 12px;
+    }
 }
 
 /* Karte mit eingebettetem iframe: Seite füllt die Karte komplett aus */
