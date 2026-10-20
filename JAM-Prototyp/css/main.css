@@ -502,3 +502,17 @@ body {
 #data-geography .visualization-slot iframe {
     height: 100%;
 }
+
+#data-gender {
+    padding: 0;
+    overflow: hidden;
+}
+
+#data-gender .visualization-slot {
+    height: 75vh;
+    min-height: 600px;
+}
+
+#data-gender .visualization-slot iframe {
+    height: 100%;
+}

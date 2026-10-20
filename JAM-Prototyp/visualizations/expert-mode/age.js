@@ -123,7 +123,7 @@ function draw() {
         // Beschriftung
         fill(fill_color);
         noStroke();
-        textFont(fontStyleBold);
+        textStyle(BOLD);
         textSize(12);
         text(altersgruppe, x_age_rect, y_age_rect - (height_age / 2) - 20);
         textSize(20);
@@ -146,12 +146,13 @@ function draw() {
             let rect_width_2 = textWidth(legende_text_age_3);
             
             textFont(fontStyleRegular)
+            textStyle(NORMAL);
             textAlign(LEFT);
             textSize(12);
 
             // Legende zu Altersgruppen
             text(legende_text_age_1, startX - 82, y_age_rect - height_age/2 - 68);
-            rect(startX - 20, y_age_rect - height_age/2 - 54, rect_width + 20, 1);
+            rect(startX - 20, y_age_rect - height_age/2 - 54, rect_width + 10, 1);
 
             push();
             translate(startX + 54, y_age_rect - height_age/2 - 45)
@@ -162,12 +163,12 @@ function draw() {
             // Legende zu Anzahl
             text(legende_text_age_2, startX - 122, y_age_rect + height_age/2 + 47);
             text(legende_text_age_3, startX - 122, y_age_rect + height_age/2 + 62);
-            rect(startX - 42, y_age_rect + height_age/2 + 72, rect_width_2 - 54, 1);
+            rect(startX - 42, y_age_rect + height_age/2 + 72, rect_width_2 - 65, 1);
 
             push();
             translate(startX + 54, y_age_rect + height_age/2 + 57)
             rotate(-45);
-            rect( 0, 0, rect_width / 3 + 5, 1);
+            rect( 0, 0, rect_width / 3, 1);
             pop();
             pop();
         }

@@ -183,7 +183,7 @@ function draw() {
                 // Text für Anzahl Fälle des ausgewählten Kantons
                 push();
                 textSize(14);
-                textFont(fontStyleBold);
+                textStyle(BOLD);
                 textAlign(LEFT, CENTER);
                 text(current_canton_circle.georegion + ": " + round(current_canton_circle.incValue) + " Fälle", 20, height / 4*3);
                 pop();
