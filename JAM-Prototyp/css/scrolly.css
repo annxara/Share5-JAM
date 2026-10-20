@@ -19,10 +19,10 @@ body {
 #canvas-container {
   /* Die p5-Canvas bleibt innerhalb des Scrolly-Bereichs sichtbar. */
   position: sticky;
-  top: 0;
+  top: var(--intro-h);
   width: 100%;
-  height: 100vh;
-  margin-bottom: -100vh;
+  height: calc(100vh - var(--intro-h));
+  
   z-index: 0;
   pointer-events: none;
 }
@@ -47,10 +47,10 @@ body {
 
 .section {
   /* Jede Scroll-Section beansprucht mindestens eine Bildschirmhöhe. */
-  min-height: 100vh;
+  height: calc(100vh - var(--intro-h));
   display: flex;
   align-items: center;
-  padding: var(--space-lg);
+  
 }
 
 /* Platzierung der Schrift mittig über Abbildung */
@@ -60,7 +60,7 @@ body {
   z-index: 2;
   width: 100%;
   text-align: center;
-  padding: var(--space-lg);
+  
   font-family: "noto-sans", sans-serif;
   visibility: hidden;
 }
@@ -71,36 +71,12 @@ body {
   color: white;
 }
 
-.debug {
-  /* Technische Anzeige; opacity 0 blendet sie im fertigen Scrolly aus. */
-  position: fixed;
-  right: 0px;
-  bottom:0px;
-  z-index: 2;
-  width: 14rem;
-  font-family: ui-monospace, monospace;
-  font-size: 0.8rem;
-  opacity: 0;
-}
-
-.debug__bar {
-  /* Hintergrund der Fortschrittsleiste. */
-  height: 4px;
-  background: rgba(255, 255, 255, 0.15);
-}
-
-.debug__fill {
-  /* Vom Scrollcode dynamisch gesetzte Füllbreite. */
-  width: 100%;
-  height: 100%;
-
-}
 
 /* Sidebar links (immer sichtbar, bleibt beim Scrollen stehen), Inhalt rechts */
 .scrolly-layout {
   display: flex;
   align-items: flex-start;   /* nötig, damit position: sticky funktioniert */
-  min-height: 700px;
+  min-height: calc(100vh - var(--intro-h));
 }
 
 .scrolly-layout > .sidebar {

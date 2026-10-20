@@ -28,7 +28,7 @@ async function setup() {
 
     // Canvas einrichten; p5-Funktionen in den Layouts sind erst ab hier verfügbar.
     rectMode(CENTER, CENTER);
-    const canvas = createCanvas(scrollyWidth(), windowHeight);
+    const canvas = createCanvas(scrollyWidth(), scrollyHeight());
     canvas.parent('canvas-container');
     randomSeed(1);      // stabile Zuordnung, wenn random/shuffle verwendet wird
 
@@ -222,7 +222,7 @@ function drawInfo(layoutName, alpha) {
 // Responsiveness
 function windowResized() {
     // Bei einer Größenänderung werden Canvas und Zielpositionen neu berechnet.
-    resizeCanvas(windowWidth, windowHeight);
+    resizeCanvas(scrollyWidth(), scrollyHeight());
     buildLayouts();
 }
 
@@ -253,6 +253,15 @@ function gradientbg() {
 function scrollyWidth() {
     const w = document.querySelector('.scrolly-content').clientWidth;
     return w > 0 ? w : window.innerWidth;
+}
+
+function scrollyHeight() {
+    const introHeight = parseFloat(
+        getComputedStyle(document.documentElement)
+            .getPropertyValue('--intro-h')
+    ) || 0;
+
+    return Math.max(1, windowHeight - introHeight);
 }
 
 function chartArea() {

@@ -28,8 +28,6 @@ sections.forEach((section, i) => {
     onUpdate: (self) => {
       // ScrollTrigger liefert den normierten Fortschritt des Übergangs.
       state.progress = self.progress;
-      // Debug-Panel aktualisieren.
-      updateDebug();
     },
   });
 });
@@ -38,16 +36,4 @@ function setTransition(index) {
   // GSAP liefert den Zielindex; state merkt sich zusätzlich das vorherige Layout.
   state.lastIndex = index - 1;
   state.currentIndex = index;
-}
-
-function updateDebug() {
-  // Anzeigen, zwischen welchen Layouts gerade animiert wird.
-  const from = state.layoutNames[state.lastIndex];
-  const to = state.layoutNames[state.currentIndex];
-  const percent = Math.round(state.progress * 100);
-
-  // Debug-Panel aktualisieren
-  document.getElementById('debug-label').textContent = `${from} → ${to}`;
-  document.getElementById('debug-value').textContent = `${percent} %`;
-  document.getElementById('debug-fill').style.width = `${percent}%`;
 }

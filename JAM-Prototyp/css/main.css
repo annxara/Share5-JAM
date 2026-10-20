@@ -151,7 +151,7 @@ body {
 .scrolly-layout {
     display: flex;
     align-items: stretch;
-    min-height: 700px;
+    min-height: calc(100vh - var(--intro-h));
 }
 
 .sidebar {
@@ -468,6 +468,8 @@ body {
 }
 
 .site-footer {
+    position: relative;
+    z-index: 10;
     background: #2f3a45;
     color: #e6e9ec;
     font-size: 14px;
