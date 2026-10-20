@@ -17,25 +17,62 @@ document.addEventListener('DOMContentLoaded', () => {
         dataToggle.setAttribute('aria-expanded', String(open));
     }
 
+    const overviewContent = document.querySelector('#overview-content');
+    const views = {
+        overview: overviewContent,
+        scrolly: scrollyContent,
+        data: dataContent,
+    };
+
     function setView(view) {
-        const showData = view === 'data';
-
-        if (scrollyContent) {
-            scrollyContent.hidden = showData;
-        }
-
-        if (dataContent) {
-            dataContent.hidden = !showData;
-        }
+        Object.entries(views).forEach(([name, el]) => {
+            if (el) el.hidden = name !== view;
+        });
 
         if (scrollyLayout) {
-            scrollyLayout.classList.toggle('data-mode', showData);
+            scrollyLayout.classList.toggle('scrolly-mode', view === 'scrolly');
+            // bei jedem Ansichtswechsel startet die Navigation im Normalzustand
+            scrollyLayout.classList.remove('nav-expanded');
+        }
+
+        // Im Scrolly ist die Navigation zugeklappt, sonst aufgeklappt
+        if (salmonGroup) {
+            salmonGroup.classList.toggle('active', view !== 'scrolly');
+        }
+
+        if (view === 'scrolly') {
+            requestAnimationFrame(() => {
+                // 1. Canvas und ScrollTrigger mit dem sichtbaren Scrolly neu vermessen
+                window.dispatchEvent(new Event('resize'));
+                ScrollTrigger.refresh();
+
+                // 2. an den Anfang des Scrollys springen (sofort, ohne Animation)
+                //const top = scrollyLayout.getBoundingClientRect().top + window.scrollY;
+                //window.scrollTo({ top, left: 0, behavior: 'instant' });
+
+                // 3. Zustand erst zurücksetzen, wenn alle Scroll-Events durch sind
+                requestAnimationFrame(() => {
+                    state.lastIndex = 0;
+                    state.currentIndex = 0;
+                    state.progress = 1;
+                });
+            });
         }
     }
 
+    setView('overview'); // Startzustand
+
     if (salmonHeader) {
         salmonHeader.addEventListener('click', () => {
-            salmonGroup.classList.toggle('active');
+            const inScrolly = scrollyLayout && scrollyLayout.classList.contains('scrolly-mode');
+
+            if (inScrolly) {
+                // Scrolly: komplette Navigation (inkl. andere Krankheiten) ein- oder ausklappen
+                const expanded = scrollyLayout.classList.toggle('nav-expanded');
+                salmonGroup.classList.toggle('active', expanded);
+            } else {
+                salmonGroup.classList.toggle('active');
+            }
         });
     }
 

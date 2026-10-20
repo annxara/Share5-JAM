@@ -2,16 +2,15 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-rows: repeat(2, minmax(0, 1fr));
-    min-height: 100vh;
-    width: 100%;
-    overflow: hidden;
+    height: 85vh;
     background: #f77f1b;
+    overflow: hidden;
 }
 
 .overview-chart {
     min-width: 0;
     min-height: 0;
-    height: 50vh;
+    height: 100%;            /* statt 50vh: füllt die Grid-Zelle */
     overflow: hidden;
 }
 

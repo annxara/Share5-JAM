@@ -21,7 +21,7 @@ const charts = [
     },
 ];
 
-const DOT_SIZE = 6;
+const PUNKT_SIZE = 6;
 
 function createChart(config) {
     // Kreieren einer p5-Canvas für jede Krankheit
@@ -72,7 +72,7 @@ function createChart(config) {
                 const target = targets[index];
                 particle.x = p.lerp(particle.x, target.x, 0.08);
                 particle.y = p.lerp(particle.y, target.y, 0.08);
-                if (visible[index]) p.circle(particle.x, particle.y, DOT_SIZE);
+                if (visible[index]) p.circle(particle.x, particle.y, PUNKT_SIZE);
             });
 
             // Name der Krankheit

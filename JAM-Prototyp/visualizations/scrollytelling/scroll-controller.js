@@ -38,7 +38,6 @@ function setTransition(index) {
   // GSAP liefert den Zielindex; state merkt sich zusätzlich das vorherige Layout.
   state.lastIndex = index - 1;
   state.currentIndex = index;
-  updateDebug();
 }
 
 function updateDebug() {

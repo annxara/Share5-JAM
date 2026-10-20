@@ -107,26 +107,32 @@ header,
 
 }
 
-/* Das Scrollytelling nutzt die gesamte Seitenbreite. */
+/* Sidebar links (immer sichtbar, bleibt beim Scrollen stehen), Inhalt rechts */
 .scrolly-layout {
-  position: relative;
-  display: block;
+  display: flex;
+  align-items: flex-start;   /* nötig, damit position: sticky funktioniert */
   min-height: 700px;
 }
 
-.scrolly-content {
-  width: 100%;
-  min-width: 0;
-}
-
 .scrolly-layout > .sidebar {
-  display: block;
-  position: absolute;
+  position: sticky;
   top: 0;
-  left: 0;
+  flex: 0 0 400px;
   width: 400px;
   z-index: 4;
   background: #fff;
+}
+
+.scrolly-content,
+.data-content,
+.overview-content {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* display: grid o. ä. würde sonst das hidden-Attribut überschreiben */
+.scrolly-layout > [hidden] {
+  display: none !important;
 }
 
 .section__content h2 {
@@ -135,21 +141,17 @@ header,
   margin-right: auto;
 }
 
-/* Im Datenmodus bekommt die Sidebar ihren eigenen Flex-Bereich. */
-.scrolly-layout.data-mode {
-  display: flex;
-  align-items: stretch;
+/* Scrolly-Modus: Inhalt volle Breite, Sidebar liegt darüber */
+.scrolly-layout.scrolly-mode > .scrolly-content {
+  margin-left: -400px;   /* gleich breit wie die Sidebar */
 }
 
-.scrolly-layout.data-mode > .sidebar {
-  position: sticky;
-  top: 0;
-  left: auto;
-  flex: 0 0 400px;
-  width: 400px;
+/* In dieser Ansicht nur Salmonellose zeigen (zugeklappt oder aufgeklappt) */
+.scrolly-layout.scrolly-mode .disease-group:not(.salmonellose) {
+  display: none;
 }
 
-.scrolly-layout.data-mode > .data-content {
-  flex: 1 1 auto;
-  min-width: 0;
+/* Im Scrolly nur Salmonellose zeigen, ausser die Navigation wurde aufgeklappt */
+.scrolly-layout.scrolly-mode:not(.nav-expanded) .disease-group:not(.salmonellose) {
+  display: none;
 }

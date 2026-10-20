@@ -30,24 +30,23 @@ async function setup() {
     rectMode(CENTER, CENTER);
     const canvas = createCanvas(scrollyWidth(), windowHeight);
     canvas.parent('canvas-container');
-    randomSeed(1);      // stabile Zuordnung, wenn random verwendet wird
+    randomSeed(1);      // stabile Zuordnung, wenn random/shuffle verwendet wird
 
+    // Zielpositionen aller Layouts berechnen.
     buildLayouts();
 
     // Startpositionen zufällig verteilen; die Layouts übernehmen danach die Zielpositionen.
-    particles = CASES.map((c) => ({
+    particles = CASES.map(() => ({
         x: random(width),
         y: random(height)
     }));
 }
 
-// Zeichenfläche für die Diagramme, 
-// könnte auch fullsize canvas sein, 
-// hier nur Bereich der Canvas
+
 function chartArea() {
     // Der Diagrammbereich lässt an allen Seiten einen kleinen Rand frei.
-    const w = width - width / 10;
-    const h = height - height / 10;
+    const w = windowWidth - windowWidth / 10;
+    const h = windowHeight - windowHeight / 10;
 
     return {
         x: (width - w) / 2,
@@ -74,7 +73,7 @@ function buildLayouts() {
                     ? getSeasonalityColumns(data)
                     : name === 'trend'
                         ? getTrendDirection(data)
-                    : undefined;
+                        : undefined;
         const visibleCount = name === 'total'
             ? actualCount
             : name === 'change'
@@ -103,6 +102,7 @@ function buildLayouts() {
 function draw() {
     // Hintergrund und aktive Layouts für den aktuellen Scrollzustand zeichnen.
     gradientbg();
+    if (!computedLayouts.length || !particles.length) return;
 
     const last = computedLayouts[state.lastIndex];
     const current = computedLayouts[state.currentIndex];
@@ -118,6 +118,10 @@ function draw() {
     //state.progress 0 bis 1
     //ease() sorgt für sanfte Beschleunigung/Abbremsung, sonst linear
     //ease() ist eine Funktion, die auf GSAP 'power2.inOut' zurückgreift, siehe Zeile 7
+
+    // Die Hintergrundzahl liegt unter den Partikeln und wird mit dem Layout überblendet.
+    drawBackgroundNumber(lastLayoutName, 1 - particleProgress);
+    drawBackgroundNumber(currentLayoutName, particleProgress);
 
     // Jedes Partikel wird zwischen seinem alten und neuen Ziel interpoliert.
     noStroke();
@@ -137,10 +141,10 @@ function draw() {
         const isVisible = isTotalToChange
             ? last.visible[i]
             : isChangeToSeasonality
-            ? i < actualCount
-                ? last.visible[i]
-                : current.visible[i]
-            : !current.visible || current.visible[i];
+                ? i < actualCount
+                    ? last.visible[i]
+                    : current.visible[i]
+                : !current.visible || current.visible[i];
         if (!isVisible) continue;
 
         drawingContext.fillStyle = '#ffffff';
@@ -161,42 +165,65 @@ function drawLabels(labels, alpha) {
     if (alpha <= 0) return;
     fill(255, alpha * 255);
     textAlign(CENTER, CENTER);
-    textSize(12);
+    textSize(15);
     labels.forEach((l) => text(l.text, l.x, l.y));
 }
 
+function drawBackgroundNumber(layoutName, alpha) {
+    if (alpha <= 0 || !['total', 'change'].includes(layoutName)) return;
+
+    const number = layoutName === 'total'
+        ? String(getParticleCount(data))
+        : getChangeText(data);
+    const area = chartArea();
+    const maxWidth = area.w * 0.9;
+
+    noFill();
+    stroke(255, alpha * 255)
+    textAlign(CENTER, CENTER);
+    textStyle(BOLD);
+    textSize(area.h * 0.6);
+    if (textWidth(number) > maxWidth) {
+        textSize(textSize() * (maxWidth / textWidth(number)));
+    }
+    text(number, width / 2, height / 2);
+}
+
 function drawInfo(layoutName, alpha) {
-    // Info-Text fest an der Canvas statt an der HTML-Section positionieren.
     if (alpha <= 0) return;
 
     const topic = INFO_TOPICS[layoutName];
     if (!topic) return;
 
+    const infoY = layoutName === 'seasonality'
+        ? height * 0.5
+        : height * 0.77;
+    const boxW = width * 0.8;
+    const boxH = 120;
+
+    push();
+    rectMode(CORNER);                 // Box beginnt links oben, Text wird darin zentriert
     fill(255, alpha * 255);
+    noStroke();
+    textStyle(NORMAL);
     textAlign(CENTER, CENTER);
     textSize(18);
     textLeading(24);
     text(
         getTopicInfo(data, topic),
-        visibleScrollyCenterX(),
-        height * 0.14
+        (width - boxW) / 2,           // linker Rand der Box, so dass sie mittig sitzt
+        infoY - boxH / 2,
+        boxW,
+        boxH
     );
+    pop();
 }
 
-function visibleScrollyCenterX() {
-    const sidebar = document.querySelector('.scrolly-layout > .sidebar');
-    const sidebarWidth = sidebar ? sidebar.getBoundingClientRect().width : 0;
-    return sidebarWidth + (width - sidebarWidth) / 2;
-}
-
+// Responsiveness
 function windowResized() {
     // Bei einer Größenänderung werden Canvas und Zielpositionen neu berechnet.
-    resizeCanvas(scrollyWidth(), windowHeight);
+    resizeCanvas(windowWidth, windowHeight);
     buildLayouts();
-}
-
-function scrollyWidth() {
-    return document.querySelector('.scrolly-content').clientWidth;
 }
 
 function gradientbg() {
@@ -219,7 +246,17 @@ function gradientbg() {
 
     const currentColor = lerpColor(color1, color2, pageProgress);
 
-    // Den Hintergrund über p5 zeichnen, damit der nachfolgende Partikelfarbwert
-    // nicht mit dem direkt gesetzten Canvas-Farbwert synchronisiert bleibt.
+    // über p5 zeichnen, damit p5s Fill-Cache nicht mit dem Canvas auseinanderläuft
     background(currentColor);
+}
+
+function scrollyWidth() {
+    const w = document.querySelector('.scrolly-content').clientWidth;
+    return w > 0 ? w : window.innerWidth;
+}
+
+function chartArea() {
+    const w = width - width / 10;
+    const h = height - height / 10;
+    return { x: (width - w) / 2, y: (height - h) / 2, w, h };
 }
