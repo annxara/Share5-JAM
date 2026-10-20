@@ -5,6 +5,7 @@
     height: 85vh;
     background: #f77f1b;
     overflow: hidden;
+    margin-left: -400px;   /* gleiche Breite wie .sidebar */
 }
 
 .overview-chart {
@@ -19,3 +20,10 @@
     width: 100% !important;
     height: 100% !important;
 }
+
+
+
+
+
+
+
