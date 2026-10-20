@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const scrollyContent = document.querySelector('.scrolly-content');
     const dataContent = document.querySelector('#data-content');
     const scrollyLayout = document.querySelector('.scrolly-layout');
+    const diseaseGroups = document.querySelectorAll('.disease-group');
 
     const intro = document.querySelector('.page-intro');
 
@@ -28,6 +29,20 @@ document.addEventListener('DOMContentLoaded', () => {
         dataToggle.setAttribute('aria-expanded', String(open));
     }
 
+    function collapseNavigationOnScroll() {
+        if (!dataContent || dataContent.hidden) {
+            return;
+        }
+
+        diseaseGroups.forEach((group) => {
+            group.classList.remove('active');
+        });
+        if (scrollyLayout) {
+            scrollyLayout.classList.add('data-nav-collapsed');
+        }
+        setDataMenu(false);
+    }
+
     const overviewContent = document.querySelector('#overview-content');
     const views = {
         overview: overviewContent,
@@ -42,6 +57,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (scrollyLayout) {
             scrollyLayout.classList.toggle('scrolly-mode', view === 'scrolly');
+            if (view !== 'data') {
+                scrollyLayout.classList.remove('data-nav-collapsed');
+            }
             // bei jedem Ansichtswechsel startet die Navigation im Normalzustand
             scrollyLayout.classList.remove('nav-expanded');
         }
@@ -91,7 +109,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 salmonGroup.classList.toggle('active', expanded);
             } else {
                 // Datenansicht: normal auf- und zuklappen
-                salmonGroup.classList.toggle('active');
+                const wasCollapsed = scrollyLayout
+                    && scrollyLayout.classList.contains('data-nav-collapsed');
+
+                if (scrollyLayout) {
+                    scrollyLayout.classList.remove('data-nav-collapsed');
+                }
+
+                if (wasCollapsed) {
+                    salmonGroup.classList.add('active');
+                    setDataMenu(true);
+                } else {
+                    salmonGroup.classList.toggle('active');
+                }
             }
         });
     }
@@ -126,5 +156,6 @@ document.addEventListener('DOMContentLoaded', () => {
             setView('data');
         });
     });
-});
 
+    window.addEventListener('scroll', collapseNavigationOnScroll, { passive: true });
+});

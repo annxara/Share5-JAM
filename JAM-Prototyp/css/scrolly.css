@@ -144,3 +144,8 @@ body {
 .scrolly-layout.scrolly-mode:not(.nav-expanded) .disease-group:not(.salmonellose) {
   display: none;
 }
+
+/* Nach dem Scrollen in der Datenansicht nur die Salmonellose-Navigation zeigen. */
+.scrolly-layout.data-nav-collapsed .disease-group:not(.salmonellose) {
+  display: none;
+}
