@@ -105,8 +105,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 setView('scrolly');
             } else if (inScrolly) {
                 // Scrolly: komplette Navigation ein- oder ausklappen
-                const expanded = scrollyLayout.classList.toggle('nav-expanded');
-                salmonGroup.classList.toggle('active', expanded);
+                const isExpanded = scrollyLayout.classList.contains('nav-expanded');
+                scrollyLayout.classList.toggle('nav-expanded', !isExpanded);
+                salmonGroup.classList.toggle('active', !isExpanded);
             } else {
                 // Datenansicht: normal auf- und zuklappen
                 const wasCollapsed = scrollyLayout

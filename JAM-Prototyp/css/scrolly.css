@@ -135,12 +135,7 @@ body {
   margin-left: -400px;   /* gleich breit wie die Sidebar */
 }
 
-/* In dieser Ansicht nur Salmonellose zeigen (zugeklappt oder aufgeklappt) */
-.scrolly-layout.scrolly-mode .disease-group:not(.salmonellose) {
-  display: none;
-}
-
-/* Im Scrolly nur Salmonellose zeigen, ausser die Navigation wurde aufgeklappt */
+/* Im Scrolly zunächst nur die kompakte Salmonellose-Navigation zeigen. */
 .scrolly-layout.scrolly-mode:not(.nav-expanded) .disease-group:not(.salmonellose) {
   display: none;
 }
