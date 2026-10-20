@@ -22,7 +22,6 @@ async function setup() {
     current_data = d3.sort(current_data, d => d.prct);
 
     is_initialized = true;
-    console.log(current_data);
 }
 
 function windowResized() {
@@ -40,7 +39,7 @@ function getHoveredTypeIndex() {
         return -1;
     }
 
-    const rectangleWidth = min(width - 40, 900);
+    const rectangleWidth = width - 40;
     const rectangleTop = height / 2 - 60;
     const rectangleBottom = height / 2 + 60;
     const rectangleLeft = width / 2 - rectangleWidth / 2;

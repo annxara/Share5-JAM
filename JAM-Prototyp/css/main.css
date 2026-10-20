@@ -532,8 +532,8 @@ body {
 #data-types {
     padding: 0;
     overflow: hidden;
-    height: 37.5vh;
-    min-height: 300px;
+    height: 60vh;
+    min-height: 550px;
 }
 
 #data-types .visualization-slot {

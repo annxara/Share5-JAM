@@ -104,7 +104,6 @@ async function setup() {
     // Positioniert alle DOM-Elemente und synchronisiert den Anfangszustand.
     updateSliderLayout();
     updateCurrentYear();
-    console.log(current_data);
 }
  
 // Liest das Jahr aus dem Slider und ersetzt current_data durch die Daten
@@ -163,6 +162,8 @@ function getHoveredTypeIndex() {
         return -1;
     }
  
+    // Muss der Breitenbegrenzung in draw() entsprechen, damit Klickfläche
+    // und sichtbare Segmente deckungsgleich bleiben.
     const rectangleWidth = min(width - 40, 900);
     const rectangleTop = height / 2 - 60;
     const rectangleBottom = height / 2 + 60;
@@ -564,7 +565,6 @@ function updateLayout() {
     sliderValueLabel.position(width / 2, height - 130);
 }
  
-
 
 
 

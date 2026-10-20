@@ -96,7 +96,6 @@ function buildLayouts() {
         ),
     };
 
-    //console.log('layouts built', computedLayouts);
 }
 
 function draw() {
