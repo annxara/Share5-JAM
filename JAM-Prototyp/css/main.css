@@ -105,13 +105,14 @@ body {
 }
 
 :root {
-    --intro-h: 0px; /* wird per JS gesetzt */
+    --intro-h: 0px;
+    /* wird per JS gesetzt */
 }
 
 .page-intro {
     position: sticky;
     top: 0;
-    z-index: 20;          /* fehlt bei dir */
+    z-index: 20;
     padding: 24px 24px 16px;
     background: #fff;
 }
@@ -154,10 +155,15 @@ body {
 .sidebar {
     position: sticky;
     top: var(--intro-h);
-    z-index: 10;          /* fehlt bei dir */
+    z-index: 10;
+    width: 400px;
+    flex: 0 0 400px;
+    align-self: flex-start;
     max-height: calc(100vh - var(--intro-h));
     overflow-y: auto;
-    /* ...Rest wie bisher */
+    background: #fff;
+    border-right: 1px solid #ddd;
+    margin-left: 0;
 }
 
 .scrolly-content {
@@ -368,11 +374,17 @@ body {
     }
 
     .sidebar {
-        position: static;
-        width: 100%;
-        flex: 0 0 100%;
-        border-right: none;
-        border-bottom: 1px solid #ddd;
+        position: sticky;
+        top: var(--intro-h);
+        z-index: 10;
+        width: 400px;
+        flex: 0 0 400px;
+        align-self: flex-start;
+        max-height: calc(100vh - var(--intro-h));
+        overflow-y: auto;
+        background: #fff;
+        border-right: 1px solid #ddd;
+        margin-left: 0;
     }
 
     .scrolly-content {
@@ -457,7 +469,7 @@ body {
 
 .footer-inner {
     max-width: 1100px;
-    margin: 0 ;
+    margin: 0;
     padding: 24px;
 }
 
@@ -558,6 +570,11 @@ body {
 }
 
 @keyframes view-fade-in {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
