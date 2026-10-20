@@ -233,8 +233,7 @@ function draw() {
         cumulativePercentage += areaPercentage;
         const lineX = rectangleLeft + cumulativePercentage * onePercent;
 
-        // orange, wenn der bereich ausgewählt ist ODER die maus darüber ist
-        const isHighlighted = i === selected_type_index || i === hovered_index;
+        const isSelected = i === selected_type_index;
 
         //zeichnet die linie für die zusammengerechnete prozentzahl
         line(
@@ -246,7 +245,7 @@ function draw() {
 
         //zeichnet die prozentzahl und den type
         noStroke();
-        fill(isHighlighted ? "#F77F1B" : "black");
+        fill(isSelected ? "#F77F1B" : "#181717");
         textAlign(LEFT, BOTTOM);
         textSize(16);
         const percentageLabel = `${areaPercentage.toFixed(1)} %`;
@@ -260,8 +259,8 @@ function draw() {
         //zeigt den type an
         textAlign(RIGHT, TOP);
         textSize(typeLabelLayout.labelSize);
-        const isSelected = i === selected_type_index;
-        fill(isHighlighted ? "#F77F1B" : "black");
+    
+        fill(isSelected ? "#F77F1B" : "#181717");
         textStyle(isSelected ? BOLD : NORMAL);
         const sharedLabelX = typeLabelLayout.positions[i];
         const typeLabelY = rectangleY + rectangleHeight / 2 + 5

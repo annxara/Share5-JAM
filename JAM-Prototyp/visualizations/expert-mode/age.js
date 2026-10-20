@@ -94,7 +94,7 @@ async function setup() {
 
 
 function draw() {
-    background(245);
+    background(255);
 
     if (!current_data_age) return;
 

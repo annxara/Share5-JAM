@@ -7,17 +7,7 @@
 /* ---------- Schrift ---------- */
 /* Pfad beginnt am Hauptverzeichnis des Servers (/assets/...).
    Falls die Schriften woanders liegen, hier anpassen. */
-@font-face {
-    font-family: "NotoSans";
-    src: url("/assets/NotoSans-Regular.ttf") format("truetype");
-    font-weight: 400;
-}
 
-@font-face {
-    font-family: "NotoSans";
-    src: url("/assets/NotoSans-Bold.ttf") format("truetype");
-    font-weight: 800;
-}
 
 /* ---------- Grundlayout ---------- */
 * {
@@ -91,13 +81,14 @@ p {
 
 .toolbar-bottom {
     position: absolute;
-    bottom: 20px;
+    bottom: 0px;
     left: 20px;
     right: 20px;
 
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-bottom: 20px;
 
     z-index: 10;
 }

@@ -351,7 +351,7 @@ function draw() {
     // Zeichnet zuerst das weiße Grundrechteck mit schwarzem Rahmen.
     rectMode(CENTER);
     fill("white");
-    stroke("black");
+    stroke("#181717");
     // Die Grafik ist höchstens 900 Pixel breit und lässt seitlich 20 Pixel
     // Abstand zum Fensterrand.
     const rectangleWidth = min(width - 40, 900);
@@ -411,7 +411,7 @@ function draw() {
     }
  
     // Ab hier werden Segmentgrenzen, Prozentlabels und Typnamen gezeichnet.
-    stroke("black");
+    stroke("#181717");
     strokeWeight(1);
     // Prozentlabels stehen oberhalb des Balkens. Sie werden rechtsbündig
     // gezeichnet, damit ihre rechte Textkante auf der Prozentlinie liegt.
@@ -424,9 +424,6 @@ function draw() {
         cumulativePercentage += areaPercentage;
         const lineX = rectangleLeft + cumulativePercentage * onePercent;
         const isSelected = i === selected_type_index;
-        // orange, wenn der Typ ausgewählt ist ODER die Maus darüber ist
-        const isHighlighted = isSelected || i === hovered_index;
- 
         // Die Linie markiert das Ende des aktuellen kumulierten Segments.
         line(
             lineX,
@@ -438,7 +435,7 @@ function draw() {
         // Prozentwert und Typname werden mit unterschiedlichen Text-
         // ausrichtungen gezeichnet.
         noStroke();
-        fill(isHighlighted ? "#F77F1B" : "black");
+        fill(isSelected ? "#F77F1B" : "#181717");
         textSize(16);
         // Der Textausrichtungszustand wird beim Zeichnen des Typnamens
         // verändert. Deshalb wird RIGHT hier für jedes Prozentlabel erneut
@@ -456,7 +453,7 @@ function draw() {
         // Zeichnet den Typnamen unterhalb des Balkens.
         textAlign(LEFT, TOP);
         textSize(typeLabelLayout.labelSize);
-        fill(isHighlighted ? "#F77F1B" : "black");
+        fill(isSelected ? "#F77F1B" : "#181717");
         textStyle(isSelected ? BOLD : NORMAL);
         const titleWidth = textWidth(current_data[i].type);
  
@@ -567,7 +564,6 @@ function updateLayout() {
     sliderValueLabel.position(width / 2, height - 130);
 }
  
-
 
 
 

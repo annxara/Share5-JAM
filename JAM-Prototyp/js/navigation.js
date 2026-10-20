@@ -30,8 +30,40 @@ document.addEventListener('DOMContentLoaded', () => {
         dataToggle.setAttribute('aria-expanded', String(open));
     }
 
+    function scrollToDataStart() {
+        if (!dataContent) {
+            return;
+        }
+
+        requestAnimationFrame(() => {
+            const introHeight = intro ? intro.offsetHeight : 0;
+            const dataTop = dataContent.getBoundingClientRect().top + window.scrollY;
+
+            window.scrollTo({
+                top: Math.max(0, dataTop - introHeight),
+                left: 0,
+                behavior: 'auto',
+            });
+        });
+    }
+
+    function openDataView() {
+        setDataMenu(true);
+        setView('data');
+        if (scrollyLayout) {
+            scrollyLayout.classList.remove('data-nav-collapsed');
+        }
+        scrollToDataStart();
+    }
+
     function collapseNavigationOnScroll() {
         if (!dataContent || dataContent.hidden) {
+            return;
+        }
+
+        const introHeight = intro ? intro.offsetHeight : 0;
+        const dataStart = dataContent.getBoundingClientRect().top + window.scrollY - introHeight;
+        if (Math.abs(window.scrollY - Math.max(0, dataStart)) <= 2) {
             return;
         }
 
@@ -139,8 +171,12 @@ document.addEventListener('DOMContentLoaded', () => {
             dataLinks.forEach((item) => item.classList.remove('active'));
 
             if (link === dataToggle) {
-                setDataMenu(shouldOpenDataMenu);
-                setView('data');
+                if (shouldOpenDataMenu) {
+                    openDataView();
+                } else {
+                    setDataMenu(false);
+                    setView('data');
+                }
             } else {
                 setDataMenu(false);
                 setView('scrolly');
@@ -156,6 +192,9 @@ document.addEventListener('DOMContentLoaded', () => {
             dataLinks.forEach((item) => item.classList.toggle('active', item === link));
             setDataMenu(true);
             setView('data');
+            if (scrollyLayout) {
+                scrollyLayout.classList.remove('data-nav-collapsed');
+            }
         });
     });
 
@@ -165,9 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 item.classList.toggle('active', item === dataToggle);
             });
             dataLinks.forEach((item) => item.classList.remove('active'));
-            setDataMenu(true);
-            setView('data');
-            window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+            openDataView();
         });
     }
 

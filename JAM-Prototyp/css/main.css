@@ -532,15 +532,18 @@ body {
 #data-types {
     padding: 0;
     overflow: hidden;
+    height: 37.5vh;
+    min-height: 300px;
 }
 
 #data-types .visualization-slot {
-    height: 75vh;
-    min-height: 600px;
+    height: 100%;
+    min-height: 0;
 }
 
 #data-types .visualization-slot iframe {
     height: 100%;
+    min-height: 0;
 }
 
 #data-age {
@@ -574,15 +577,18 @@ body {
 #data-gender {
     padding: 0;
     overflow: hidden;
+    height: 37.5vh;
+    min-height: 300px;
 }
 
 #data-gender .visualization-slot {
-    height: 75vh;
-    min-height: 600px;
+    height: 100%;
+    min-height: 0;
 }
 
 #data-gender .visualization-slot iframe {
     height: 100%;
+    min-height: 0;
 }
 
 .view-fade-out {
