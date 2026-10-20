@@ -376,6 +376,7 @@ body {
     flex-shrink: 0;
     transform: rotate(90deg);
     margin-top: 0;
+    filter: invert(1);
 }
 
 .data-toggle.active .data-marker {
@@ -415,7 +416,7 @@ body {
 
     .data-content {
         min-height: 0;
-        padding: 20px 16px 40px;
+        padding: 10px 16px 40px;
     }
 
     .data-card {

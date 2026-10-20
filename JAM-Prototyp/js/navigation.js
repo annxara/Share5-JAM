@@ -167,6 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
             dataLinks.forEach((item) => item.classList.remove('active'));
             setDataMenu(true);
             setView('data');
+            window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
         });
     }
 
