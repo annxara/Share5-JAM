@@ -280,6 +280,8 @@ body {
     margin-left: 20px;
 }
 
+
+
 /* Dreht den Pfeil nach unten, wenn die Gruppe aktiv ist. */
 .disease-group:not(.active) .marker {
     transform: rotate(180deg);
@@ -361,6 +363,19 @@ body {
     flex-shrink: 0;
     transform: rotate(90deg);
     margin-right: 10px;
+}
+
+.data-marker-daten {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url("../assets/images/pfeil-share5.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    flex-shrink: 0;
+    transform: rotate(90deg);
+    margin-top: 0;
 }
 
 .data-toggle.active .data-marker {

@@ -47,10 +47,29 @@ body {
 
 .section {
   /* Jede Scroll-Section beansprucht mindestens eine Bildschirmhöhe. */
+  position: relative;
   height: calc(100vh - var(--intro-h));
   display: flex;
   align-items: center;
-  
+}
+
+.scrolly-data-button {
+  position: absolute;
+  left: 50%;
+  bottom: 2rem;
+  transform: translateX(-50%);
+  z-index: 3;
+  padding: 0.7rem 1.4rem;
+  border: 1px solid #181717;
+  border-radius: 6px;
+  background: #fff;
+  color: #181717;
+  font: inherit;
+  cursor: pointer;
+}
+
+.scrolly-data-button:hover {
+  background: #f3f3f3;
 }
 
 /* Platzierung der Schrift mittig über Abbildung */

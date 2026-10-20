@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const dataContent = document.querySelector('#data-content');
     const scrollyLayout = document.querySelector('.scrolly-layout');
     const diseaseGroups = document.querySelectorAll('.disease-group');
+    const scrollyDataButton = document.querySelector('.scrolly-data-button');
 
     const intro = document.querySelector('.page-intro');
 
@@ -157,6 +158,17 @@ document.addEventListener('DOMContentLoaded', () => {
             setView('data');
         });
     });
+
+    if (scrollyDataButton) {
+        scrollyDataButton.addEventListener('click', () => {
+            salmonLinks.forEach((item) => {
+                item.classList.toggle('active', item === dataToggle);
+            });
+            dataLinks.forEach((item) => item.classList.remove('active'));
+            setDataMenu(true);
+            setView('data');
+        });
+    }
 
     window.addEventListener('scroll', collapseNavigationOnScroll, { passive: true });
 });
