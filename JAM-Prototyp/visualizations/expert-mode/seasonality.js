@@ -350,7 +350,7 @@ function draw() {
                 push();
                 translate(legende_x_sais + 125 - rect_width/2, legende_y_sais - 40);
                 rotate(40);
-                rect( 0, 0, rect_width / 5 + 4, 1);
+                rect( 0, 0, rect_width / 5 + 6, 1);
                 pop();
                 pop();
             }

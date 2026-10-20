@@ -460,3 +460,45 @@ body {
 #data-seasonality .visualization-slot iframe {
     height: 100%;
 }
+
+#data-types {
+    padding: 0;
+    overflow: hidden;
+}
+
+#data-types .visualization-slot {
+    height: 75vh;
+    min-height: 600px;
+}
+
+#data-types .visualization-slot iframe {
+    height: 100%;
+}
+
+#data-age {
+    padding: 0;
+    overflow: hidden;
+}
+
+#data-age .visualization-slot {
+    height: 75vh;
+    min-height: 600px;
+}
+
+#data-age .visualization-slot iframe {
+    height: 100%;
+}
+
+#data-geography {
+    padding: 0;
+    overflow: hidden;
+}
+
+#data-geography .visualization-slot {
+    height: 75vh;
+    min-height: 600px;
+}
+
+#data-geography .visualization-slot iframe {
+    height: 100%;
+}

@@ -1,11 +1,48 @@
+/* ==========================================================
+   Gemeinsames Stylesheet für alle eingebetteten Visualisierungen
+   (Saisonalität, Krankheitstypen, Altersverteilung, Geografie,
+   Geschlecht)
+   ========================================================== */
+
+/* ---------- Schrift ---------- */
+/* Pfad beginnt am Hauptverzeichnis des Servers (/assets/...).
+   Falls die Schriften woanders liegen, hier anpassen. */
+@font-face {
+    font-family: "NotoSans";
+    src: url("/assets/NotoSans-Regular.ttf") format("truetype");
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: "NotoSans";
+    src: url("/assets/NotoSans-Bold.ttf") format("truetype");
+    font-weight: 800;
+}
+
+/* ---------- Grundlayout ---------- */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: sans-serif;
+    font-family: "NotoSans", sans-serif;
     font-weight: 400;
     color: #181717;
+}
 
+html, body {
+    overflow: hidden;   /* im iframe soll nichts scrollen */
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #f0f0f0;
+}
+
+canvas {
+    display: block;     /* verhindert Zusatzabstand unter der Canvas */
 }
 
 h2 {
@@ -17,72 +54,34 @@ p {
     font-size: 10pt;
 }
 
-html, body {
-    overflow: hidden;
+.titel-legende {
+    font-weight: 800;
 }
 
-canvas {
-    display: block;
-}
-
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background: #f0f0f0;
-}
-
-
+/* ---------- Container ---------- */
 .viz-container {
     display: flex;
     align-items: center;
     justify-content: center;
-    float: left;
-    width:100%;
-    flex-direction:column;
+    flex-direction: column;
     position: relative;
+    width: 100vw;
+    height: 100vh;
 }
 
-.btn {
-    z-index: 2;
-    background: none;
-    border-color: #181717;
-    color: #181717;
-    padding: 5px 10px;
-    border-radius: 6px;
-    transition-duration: 0.1s;
-    font-size: 10pt;
-    border: 1px solid;
-
-    width: auto; /* oder ganz entfernen */
-    min-width: 0;
-}
-
-
-.btn.active {
-  background-color: #F77F1B; /* Green */
-  color: white;
-  border-color: #F77F1B;
-}
-
-.btn-row {
-    display: flex;
-    width: 100%;
-    gap: 10px;
-}
-
-.btn-row .btn {
-    flex: 1 1 0;
-}
-
-
-#canvas-container-sais {
+#canvas-container-sais,
+#canvas-container-typen,
+#canvas-container-sex,
+#canvas-container-geo {
     width: 100%;
     height: 100%;
 }
 
-.toolbar {
+/* ---------- Toolbars ---------- */
+.toolbar,
+.toolbar-typen,
+.toolbar-sex,
+.toolbar-geo {
     position: absolute;
     top: 1rem;
     left: 1rem;
@@ -102,6 +101,75 @@ body {
     z-index: 10;
 }
 
+/* ---------- Buttons ---------- */
+.btn {
+    z-index: 2;
+    background: none;
+    border-color: #181717;
+    color: #181717;
+    border: 1px solid;
+    padding: 5px 10px;
+    border-radius: 6px;
+    transition-duration: 0.1s;
+    font-size: 10pt;
+    width: auto;
+    min-width: 0;
+}
+
+.btn.active {
+    background-color: #F77F1B;
+    border-color: #F77F1B;
+    color: white;
+    font-weight: 800;
+}
+
+.btn-row {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+}
+
+.btn-row .btn {
+    flex: 1 1 0;
+}
+
+/* ---------- Geografie: Kantons-Buttons ---------- */
+.container-interaction {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.btn-kantone {
+    z-index: 2;
+    background: none;
+    border: none;
+    color: #181717;
+    padding-right: 15px;
+    transition-duration: 0.1s;
+    font-size: 10pt;
+    width: auto;
+    min-width: 0;
+    text-align: left;
+    font-weight: 400;
+}
+
+.btn-kantone.active {
+    color: #F77F1B;
+}
+
+.btns-kantone {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+    padding-top: 5px;
+}
+
+#btn-kantonsgrenze {
+    margin-left: auto;
+}
+
+/* ---------- Slider ---------- */
 .slider {
     appearance: none;
     width: 50vw;
@@ -131,9 +199,4 @@ body {
 
 .slider-value-label {
     transform: translateX(-50%);
-}
-
-.viz-container {
-    height: 100vh;
-    width: 100vw;
 }
