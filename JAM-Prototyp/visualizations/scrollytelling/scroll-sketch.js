@@ -178,8 +178,8 @@ function drawBackgroundNumber(layoutName, alpha) {
     const area = chartArea();
     const maxWidth = area.w * 0.9;
 
-    noFill();
-    stroke(255, alpha * 255)
+    noStroke();
+    fill(255, alpha * 50)
     textAlign(CENTER, CENTER);
     textStyle(BOLD);
     textSize(area.h * 0.6);

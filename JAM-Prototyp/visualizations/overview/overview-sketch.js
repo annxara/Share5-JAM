@@ -56,7 +56,7 @@ function createChart(config) {
             // Zahlen hinter Particle
             p.noStroke();
             p.noFill()
-            p.stroke("white");
+            p.fill(255,60);
             p.strokeWeight(1);
             p.textAlign(p.CENTER, p.CENTER);
             p.textStyle(p.BOLD);

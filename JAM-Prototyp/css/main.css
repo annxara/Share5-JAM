@@ -104,7 +104,13 @@ body {
     gap: 2px;
 }
 
+:root {
+    --intro-h: 0px; /* wird per JS gesetzt */
+}
+
 .page-intro {
+    position: sticky;
+    top: 0;
     padding: 24px 24px 16px;
     background: #fff;
 }
@@ -146,7 +152,7 @@ body {
 
 .sidebar {
     position: sticky;
-    top: 0;
+    top: var(--intro-h);
     width: 400px;
     flex: 0 0 400px;
     background: #fff;
@@ -413,7 +419,7 @@ body {
 
     .sidebar {
         position: sticky;
-        top: 0;
+        top: var(--intro-h);
         width: 300px;
         background: #fff;
         border-right: none;
@@ -549,4 +555,18 @@ body {
 
 #data-gender .visualization-slot iframe {
     height: 100%;
+}
+
+.view-fade-out {
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.view-fade-in {
+    animation: view-fade-in 0.4s ease;
+}
+
+@keyframes view-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }

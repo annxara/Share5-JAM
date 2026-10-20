@@ -8,6 +8,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const dataContent = document.querySelector('#data-content');
     const scrollyLayout = document.querySelector('.scrolly-layout');
 
+    const intro = document.querySelector('.page-intro');
+
+    function updateIntroHeight() {
+        if (!intro) return;
+        document.documentElement.style.setProperty('--intro-h', intro.offsetHeight + 'px');
+    }
+
+    updateIntroHeight();
+    if (intro) new ResizeObserver(updateIntroHeight).observe(intro);
+
     function setDataMenu(open) {
         if (!dataToggle) {
             return;
@@ -61,16 +71,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     setView('overview'); // Startzustand
+    if (salmonGroup) salmonGroup.classList.remove('active'); // Navigation beim Laden eingeklappt
 
     if (salmonHeader) {
         salmonHeader.addEventListener('click', () => {
             const inScrolly = scrollyLayout && scrollyLayout.classList.contains('scrolly-mode');
+            const inOverview = overviewContent && !overviewContent.hidden;
 
-            if (inScrolly) {
-                // Scrolly: komplette Navigation (inkl. andere Krankheiten) ein- oder ausklappen
+            if (inOverview) {
+                // Overview: Klick auf Salmonellose öffnet direkt das Scrolly
+                salmonLinks.forEach((item) => item.classList.toggle('active', item === salmonLinks[0]));
+                dataLinks.forEach((item) => item.classList.remove('active'));
+                setDataMenu(false);
+                setView('scrolly');
+            } else if (inScrolly) {
+                // Scrolly: komplette Navigation ein- oder ausklappen
                 const expanded = scrollyLayout.classList.toggle('nav-expanded');
                 salmonGroup.classList.toggle('active', expanded);
             } else {
+                // Datenansicht: normal auf- und zuklappen
                 salmonGroup.classList.toggle('active');
             }
         });
@@ -107,3 +126,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
