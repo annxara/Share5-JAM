@@ -65,23 +65,28 @@ function buildLayouts() {
     computedLayouts = state.layoutNames.map((name) => {
         const layoutFunction = Layouts[name];
         const actualCount = getParticleCount(data);
-        const layoutData = name === 'total'
-            ? actualCount
-            : name === 'change'
-                ? getChangeText(data)
-                : name === 'seasonality'
-                    ? getSeasonalityColumns(data)
-                    : name === 'trend'
-                        ? getTrendDirection(data)
-                        : undefined;
-        const visibleCount = name === 'total'
-            ? actualCount
-            : name === 'change'
-                ? getChangeParticleCount(data)
-                : undefined;
-        const secondaryCount = name === 'change' || name === 'seasonality'
-            ? actualCount
-            : undefined;
+        let layoutData;
+        if (name === 'total') {
+            layoutData = actualCount;
+        } else if (name === 'change') {
+            layoutData = getChangeText(data);
+        } else if (name === 'seasonality') {
+            layoutData = getSeasonalityColumns(data);
+        } else if (name === 'trend') {
+            layoutData = getTrendDirection(data);
+        }
+
+        let visibleCount;
+        if (name === 'total') {
+            visibleCount = actualCount;
+        } else if (name === 'change') {
+            visibleCount = getChangeParticleCount(data);
+        }
+
+        let secondaryCount;
+        if (name === 'change' || name === 'seasonality') {
+            secondaryCount = actualCount;
+        }
         // Layouts liefern Positionen, Labels und bei Bedarf eine Sichtbarkeitsliste.
         return layoutFunction(CASES, area, layoutData, visibleCount, secondaryCount);
     });
@@ -126,9 +131,10 @@ function draw() {
     noStroke();
     for (let i = 0; i < particles.length; i++) {
         const from = last.positions[i];
-        const to = isChangeToSeasonality && i < actualCount
-            ? intermediateLayouts.offscreen.positions[i]
-            : current.positions[i];
+        let to = current.positions[i];
+        if (isChangeToSeasonality && i < actualCount) {
+            to = intermediateLayouts.offscreen.positions[i];
+        }
 
         const p = particles[i];
 
@@ -137,13 +143,18 @@ function draw() {
         p.y = lerp(from.y, to.y, particleProgress);
 
         // Während eines Übergangs gelten je nach Phase unterschiedliche Sichtbarkeiten.
-        const isVisible = isTotalToChange
-            ? last.visible[i]
-            : isChangeToSeasonality
-                ? i < actualCount
-                    ? last.visible[i]
-                    : current.visible[i]
-                : !current.visible || current.visible[i];
+        let isVisible;
+        if (isTotalToChange) {
+            isVisible = last.visible[i];
+        } else if (isChangeToSeasonality) {
+            if (i < actualCount) {
+                isVisible = last.visible[i];
+            } else {
+                isVisible = current.visible[i];
+            }
+        } else {
+            isVisible = !current.visible || current.visible[i];
+        }
         if (!isVisible) continue;
 
         drawingContext.fillStyle = '#ffffff';
@@ -171,9 +182,12 @@ function drawLabels(labels, alpha) {
 function drawBackgroundNumber(layoutName, alpha) {
     if (alpha <= 0 || !['total', 'change'].includes(layoutName)) return;
 
-    const number = layoutName === 'total'
-        ? String(getParticleCount(data))
-        : getChangeText(data);
+    let number;
+    if (layoutName === 'total') {
+        number = String(getParticleCount(data));
+    } else {
+        number = getChangeText(data);
+    }
     const area = chartArea();
     const maxWidth = area.w * 0.9;
 
@@ -194,9 +208,12 @@ function drawInfo(layoutName, alpha) {
     const topic = INFO_TOPICS[layoutName];
     if (!topic) return;
 
-    const infoY = layoutName === 'seasonality'
-        ? height * 0.5
-        : height * 0.77;
+    let infoY;
+    if (layoutName === 'seasonality') {
+        infoY = height * 0.5;
+    } else {
+        infoY = height * 0.77;
+    }
     const boxW = width * 0.8;
     const boxH = 120;
 
@@ -238,9 +255,15 @@ function gradientbg() {
 
 
     // Fortschritt auf den Bereich 0 bis 1 begrenzen.
-    const pageProgress = sectionCount <= 1
-        ? 0
-        : constrain(Math.max(0, state.currentIndex - 1 + state.progress) / (sectionCount - 1), 0, 1);
+    let pageProgress = 0;
+    if (sectionCount > 1) {
+        pageProgress = constrain(
+            Math.max(0, state.currentIndex - 1 + state.progress)
+                / (sectionCount - 1),
+            0,
+            1
+        );
+    }
 
 
     const currentColor = lerpColor(color1, color2, pageProgress);
@@ -251,7 +274,11 @@ function gradientbg() {
 
 function scrollyWidth() {
     const w = document.querySelector('.scrolly-content').clientWidth;
-    return w > 0 ? w : window.innerWidth;
+    if (w > 0) {
+        return w;
+    }
+
+    return window.innerWidth;
 }
 
 function scrollyHeight() {

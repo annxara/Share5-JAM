@@ -26,21 +26,25 @@ const Layouts = {
   // Die Veränderungs-Partikel bilden den Text; überzählige Aktualitäts-Partikel
   // erhalten Ziele oberhalb des Fensters.
   change(cases, area, text, visibleCount, seasonalityStart) {
-    return textLayout(cases, area, text, visibleCount, (index, targetArea) => (
-      index >= seasonalityStart
-        ? belowScreenTarget(index, targetArea)
-        : offscreenTarget(index, targetArea)
-    ));
+    return textLayout(cases, area, text, visibleCount, (index, targetArea) => {
+      if (index >= seasonalityStart) {
+        return belowScreenTarget(index, targetArea);
+      }
+
+      return offscreenTarget(index, targetArea);
+    });
   },
 
   // Zwischenziele für den Übergang von change zu seasonality.
   changeDeparture(cases, area, seasonalityStart) {
     return {
-      positions: cases.map((_, index) => (
-        index >= seasonalityStart
-          ? belowScreenTarget(index, area)
-          : offscreenTarget(index, area)
-      )),
+      positions: cases.map((_, index) => {
+        if (index >= seasonalityStart) {
+          return belowScreenTarget(index, area);
+        }
+
+        return offscreenTarget(index, area);
+      }),
       labels: [],
     };
   },
@@ -78,11 +82,12 @@ function arrowLayout(cases, area, direction) {
   const arrowHeadLength = length * 0.24;
   const arrowHeadWidth = length * 0.6;
   // p5 zählt y nach unten; deshalb erhält "steigend" einen negativen Winkel.
-  const arrowAngle = direction === 'steigend'
-    ? -Math.PI / 4
-    : direction === 'sinkend'
-      ? Math.PI / 4
-      : 0;
+  let arrowAngle = 0;
+  if (direction === 'steigend') {
+    arrowAngle = -Math.PI / 4;
+  } else if (direction === 'sinkend') {
+    arrowAngle = Math.PI / 4;
+  }
 
   // Schaft und Spitze zu einem gefüllten Pfeil zusammensetzen.
   pg.push();
@@ -154,11 +159,13 @@ function textLayout(cases, area, text, visibleCount = cases.length, hiddenTarget
 
   // Durch Mischen verteilen sich die Partikel abwechslungsreicher auf den Text.
   const shuffled = shuffle(candidates);
-  const positions = cases.map((_, i) => (
-    i < visibleCount
-      ? shuffled[i % shuffled.length]
-      : hiddenTarget(i, area)
-  ));
+  const positions = cases.map((_, i) => {
+    if (i < visibleCount) {
+      return shuffled[i % shuffled.length];
+    }
+
+    return hiddenTarget(i, area);
+  });
 
   return {
     positions,
