@@ -94,11 +94,7 @@ function buildLayouts() {
     // Beim Wechsel von change zu seasonality bleiben Saisonalitäts-Partikel unten,
     // während die überschüssigen Aktualitäts-Partikel nach oben wegfliegen.
     intermediateLayouts = {
-        offscreen: Layouts.changeDeparture(
-            CASES,
-            area,
-            getParticleCount(data)
-        ),
+        offscreen: Layouts.changeDeparture(CASES, area,getParticleCount(data)),
     };
 
 }

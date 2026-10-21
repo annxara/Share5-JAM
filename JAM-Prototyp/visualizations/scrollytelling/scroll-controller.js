@@ -20,7 +20,7 @@ sections.forEach((section, i) => {
 
   ScrollTrigger.create({
     trigger: section,
-    start: 'top bottom', //Bedeutung: Die Animation oder der Bereich beginnt, wenn die Oberkante (top) des Trigger-Elements die Unterkante (bottom) des Viewports (sichtbaren Browserfensters) berührt.
+    start: 'top 110%', // Der Übergang beginnt etwas bevor die Section den Viewport erreicht.
     end: 'top top', //Bedeutung: Die Animation oder der Bereich endet, wenn die Oberkante (top) des Trigger-Elements die Oberkante (top) des Viewports berührt.
     // Beim Betreten wird das Ziel-Layout gewechselt; onEnterBack unterstützt Rückwärts-Scrollen.
     onEnter:     () => setTransition(i),
