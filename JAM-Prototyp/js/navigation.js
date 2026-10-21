@@ -56,6 +56,26 @@ document.addEventListener('DOMContentLoaded', () => {
         scrollToDataStart();
     }
 
+    function scrollToDataCard(link) {
+        const targetId = link.dataset.target;
+        const target = targetId ? document.getElementById(targetId) : null;
+
+        if (!target) {
+            return;
+        }
+
+        requestAnimationFrame(() => {
+            const introHeight = intro ? intro.offsetHeight : 0;
+            const targetTop = target.getBoundingClientRect().top + window.scrollY;
+
+            window.scrollTo({
+                top: Math.max(0, targetTop - introHeight),
+                left: 0,
+                behavior: 'smooth',
+            });
+        });
+    }
+
     function collapseNavigationOnScroll() {
         if (!dataContent || dataContent.hidden) {
             return;
@@ -195,6 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (scrollyLayout) {
                 scrollyLayout.classList.remove('data-nav-collapsed');
             }
+            scrollToDataCard(link);
         });
     });
 

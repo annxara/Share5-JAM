@@ -207,6 +207,10 @@ function getHoveredTypeIndex() {
         rectangleLeft,
         rectangleWidth
     );
+    const percentageLabelLayout = getPercentageLabelLayout(
+        current_data,
+        segmentLinePositions
+    );
  
     for (let i = 0; i < current_data.length; i++) {
         const isSelected = i === selected_type_index;
@@ -217,8 +221,9 @@ function getHoveredTypeIndex() {
         const percentageLabel = `${current_data[i].prct.toFixed(0)} %`;
         const percentageWidth = textWidth(percentageLabel);
         // Gleiche Berechnung wie in draw()
-        const percentageRight = max(segmentLinePositions[i], percentageWidth);
-        const percentageBottom = rectangleTop - 5;
+        const percentageRight = percentageLabelLayout.rights[i];
+        const percentageBottom = rectangleTop - 5
+            + percentageLabelLayout.bottoms[i];
  
         const onPercentageLabel =
             mouseX >= percentageRight - percentageWidth
@@ -228,13 +233,10 @@ function getHoveredTypeIndex() {
  
         // --- Typ-Label (unten, linksbündig gezeichnet) ---
         textSize(typeLabelLayout.labelSize);
-        textStyle(isSelected ? BOLD : NORMAL);
+        //textStyle(isSelected ? BOLD : NORMAL);
         const typeWidth = textWidth(current_data[i].type);
         // Gleiche Berechnung wie in draw()
-        const typeLeft = max(
-            rectangleLeft,
-            typeLabelLayout.positions[i] - typeWidth / 2
-        );
+        const typeLeft = typeLabelLayout.positions[i];
         const typeTop = rectangleBottom
             // +5 ist der abstand zwischen dem rechteck und dem typ label
             + 5
@@ -274,10 +276,11 @@ function getTypeLabelLayout(data, rectangleLeft, rectangleWidth) {
     let labelSize = 16;
     const minimumLabelSize = 10;
     const labelGap = 10;
-    const rowGap = 22;
+    const rowGap = 20;
  
     // Für korrekte Breitenmessungen muss die verwendete Schrift aktiv sein.
     textFont(fontStyleRegular);
+    textStyle(NORMAL);
     while (labelSize > minimumLabelSize) {
         textSize(labelSize);
         // Verkleinert die Schrift, falls ein Typname nicht in das Rechteck passt.
@@ -300,16 +303,16 @@ function getTypeLabelLayout(data, rectangleLeft, rectangleWidth) {
     for (let i = 0; i < data.length; i++) {
         const areaPercentage = data[i].prct;
  
-        const desiredX =
+        const labelLeft =
             rectangleLeft
             + (cumulativePercentage + areaPercentage)
             * rectangleWidth / 100
-            - labelWidths[i] / 2;
+            - labelWidths[i];
         cumulativePercentage += areaPercentage;
         // Die Position wird vom Segmentende aus berechnet, sodass die rechte
         // Textkante auf der Prozentlinie liegen kann.
         let rowIndex = 0;
-        let labelX = desiredX;
+        const labelX = labelLeft;
         while (true) {
             if (!rows[rowIndex]) {
                 rows[rowIndex] = [];
@@ -318,26 +321,71 @@ function getTypeLabelLayout(data, rectangleLeft, rectangleWidth) {
             // In einer leeren Zeile ist jedes Label zulässig. In einer
             // belegten Zeile wird der Abstand zum Vorgänger geprüft.
             const previousLabel = rows[rowIndex][rows[rowIndex].length - 1];
-            const labelLeft = desiredX - labelWidths[i] / 2;
             const minimumLeft = previousLabel
                 ? previousLabel.right + labelGap
                 : rectangleLeft;
             if (!previousLabel || labelLeft >= minimumLeft) {
                 rows[rowIndex].push({
-                    right: desiredX + labelWidths[i] / 2
+                    right: labelLeft + labelWidths[i]
                 });
                 break;
             }
             rowIndex += 1;
         }
-        // Speichert Position und Zeile unter demselben Index wie data[i].
+        // Speichert die linke Labelkante unter demselben Index wie data[i].
         positions.push(labelX);
         rowIndexes.push(rowIndex);
     }
  
-    return { labelSize, positions, rowIndexes, rowGap };
+    return { labelSize, labelWidths, positions, rowIndexes, rowGap };
 }
- 
+
+function getPercentageLabelLayout(data, segmentLinePositions) {
+    const labelGap = 10;
+    const rowGap = -20;
+    const rights = [];
+    const bottoms = [];
+    const rows = [];
+
+    textFont(fontStyleRegular);
+    textStyle(NORMAL);
+    textSize(16);
+
+    for (let i = 0; i < data.length; i++) {
+        const label = `${data[i].prct.toFixed(0)} %`;
+        const labelWidth = textWidth(label);
+        const right = max(segmentLinePositions[i], labelWidth);
+        let rowIndex = 0;
+
+        while (true) {
+            if (!rows[rowIndex]) {
+                rows[rowIndex] = [];
+            }
+
+            const previousLabel = rows[rowIndex][rows[rowIndex].length - 1];
+            const labelLeft = right - labelWidth;
+            const minimumLeft = previousLabel
+                ? previousLabel.right + labelGap
+                : 0;
+
+            if (!previousLabel || labelLeft >= minimumLeft) {
+                rows[rowIndex].push({
+                    right,
+                    left: labelLeft,
+                });
+                break;
+            }
+
+            rowIndex += 1;
+        }
+
+        rights.push(right);
+        bottoms.push(rowIndex * rowGap);
+    }
+
+    return { rights, bottoms };
+}
+
 function draw() {
     // p5 ruft draw() fortlaufend auf. Jeder Frame wird vollständig neu
     // aufgebaut, damit alte Auswahlen nicht im Canvas zurückbleiben.
@@ -373,6 +421,16 @@ function draw() {
         current_data,
         rectangleLeft,
         rectangleWidth
+    );
+    const percentageLabelLayout = getPercentageLabelLayout(
+        current_data,
+        current_data.map((_, index) => {
+            let percentage = 0;
+            for (let j = 0; j <= index; j++) {
+                percentage += current_data[j].prct;
+            }
+            return rectangleLeft + percentage * onePercent;
+        })
     );
  
     // Zeichnet bei einer Auswahl eine orange Fläche hinter dem Segment.
@@ -414,8 +472,8 @@ function draw() {
     // Ab hier werden Segmentgrenzen, Prozentlabels und Typnamen gezeichnet.
     stroke("#181717");
     strokeWeight(1);
-    // Prozentlabels stehen oberhalb des Balkens. Sie werden rechtsbündig
-    // gezeichnet, damit ihre rechte Textkante auf der Prozentlinie liegt.
+    // Prozentlabels werden rechtsbündig gezeichnet. Bei Überschneidungen
+    // werden sie zeilenweise nach unten verschoben.
     textAlign(RIGHT, BOTTOM);
     textFont(fontStyleRegular);
     textSize(10);
@@ -442,34 +500,28 @@ function draw() {
         // verändert. Deshalb wird RIGHT hier für jedes Prozentlabel erneut
         // ausdrücklich gesetzt.
         textAlign(RIGHT, BOTTOM);
+        textStyle(NORMAL);
         const percentageLabel = `${areaPercentage.toFixed(0)} %`;
-        const percentageLabelX = max(lineX, textWidth(percentageLabel));
+        const percentageLabelX = percentageLabelLayout.rights[i];
         text(
             // toFixed(0) zeigt den Prozentwert ohne Nachkommastellen.
             percentageLabel,
             percentageLabelX,
             rectangleY - rectangleHeight / 2 - 5
+                + percentageLabelLayout.bottoms[i]
         );
  
         // Zeichnet den Typnamen unterhalb des Balkens.
         textAlign(LEFT, TOP);
         textSize(typeLabelLayout.labelSize);
         fill(isSelected ? "#F77F1B" : "#181717");
-        textStyle(isSelected ? BOLD : NORMAL);
-        const titleWidth = textWidth(current_data[i].type);
- 
-        const sharedLabelX =
-            max(
-                rectangleLeft,
-                typeLabelLayout.positions[i] - titleWidth / 2
-            );
+        textStyle(NORMAL);
+        const sharedLabelX = typeLabelLayout.positions[i];
  
         const typeLabelY = rectangleY + rectangleHeight / 2 + 5
             + typeLabelLayout.rowIndexes[i] * typeLabelLayout.rowGap;
         text(
-            // titleBounds liefert die tatsächlichen Textgrenzen. Damit wird
-            // der Text so verschoben, dass sein Mittelpunkt positions[i]
-            // entspricht.
+            // Die rechte Textkante liegt auf der Prozentlinie.
             current_data[i].type,
             sharedLabelX,
             typeLabelY
@@ -486,12 +538,37 @@ function draw() {
  
         if (selectedBox) {
             const boxWidth = 300;
-            const padding = 8;
+            const padding = 0;
  
-            // unterste belegte Labelzeile finden
-            const lastRow = max(typeLabelLayout.rowIndexes);
+            // Die Beschreibung folgt bei einer Überschneidung der tieferen
+            // Zeile des betroffenen Label-Paares.
+            const selectedLabelLeft =
+                typeLabelLayout.positions[selected_type_index];
+            const selectedLabelRight = selectedLabelLeft
+                + typeLabelLayout.labelWidths[selected_type_index];
+            let descriptionRow =
+                typeLabelLayout.rowIndexes[selected_type_index];
+
+            for (let i = 0; i < current_data.length; i++) {
+                if (i === selected_type_index) {
+                    continue;
+                }
+
+                const labelLeft = typeLabelLayout.positions[i];
+                const labelRight = labelLeft + typeLabelLayout.labelWidths[i];
+                const overlaps = selectedLabelLeft < labelRight
+                    && selectedLabelRight > labelLeft;
+
+                if (overlaps) {
+                    descriptionRow = max(
+                        descriptionRow,
+                        typeLabelLayout.rowIndexes[i]
+                    );
+                }
+            }
+
             const boxY = rectangleY + rectangleHeight / 2 + 5
-                + (lastRow + 1) * typeLabelLayout.rowGap; // Abstand zu den Labels
+                + (descriptionRow + 1) * typeLabelLayout.rowGap;
  
             // Box darf nicht über den Canvasrand hinausragen
             const boxX = constrain(
@@ -504,8 +581,8 @@ function draw() {
             textSize(12);
             textStyle(NORMAL);
             textAlign(LEFT, TOP);
- 
-            // Zeilenanzahl bei Textumbruch ermitteln
+
+            // Die Boxhöhe passt sich aktuell automatisch an die Textzeilen an.
             const words = selectedBox.description.split(" ");
             let lines = 1;
             let currentLine = "";
@@ -519,7 +596,7 @@ function draw() {
                 }
             }
             const boxHeight = lines * textLeading();
- 
+
             rectMode(CORNER);
             fill(255);
             noStroke();
@@ -531,7 +608,7 @@ function draw() {
                 boxHeight + padding * 2,
                 8
             );
- 
+
             noStroke();
             fill("#F77F1B");
             text(selectedBox.description, boxX, boxY, boxWidth);
@@ -565,16 +642,5 @@ function updateLayout() {
     sliderValueLabel.position(width / 2, height - 130);
 }
  
-
-
-
-
-
-
-
-
-
-
-
 
 
