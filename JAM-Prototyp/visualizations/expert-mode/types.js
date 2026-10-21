@@ -112,14 +112,22 @@ function updateCurrentYear() {
     // Der Slider liefert einen String. Number() macht daraus eine Zahl,
     // damit der Vergleich mit d.temporal zuverlässig funktioniert.
     current_year = Number(slider.value());
- 
+    const selectedType = selected_type_index >= 0
+        && current_data[selected_type_index]
+        ? current_data[selected_type_index].type
+        : null;
+
     // Filtert alle anderen Jahre aus der Darstellung heraus.
     current_data = data_typen.filter(d => d.temporal === current_year);
- 
-    // Die alte Auswahl darf beim Jahreswechsel nicht auf einen neuen,
-    // möglicherweise anderen Datensatz übertragen werden.
+
     current_data = d3.sort(current_data, d => d.prct);
-    selected_type_index = -1;
+    if (selectedType) {
+        selected_type_index = current_data.findIndex(
+            item => item.type === selectedType
+        );
+    } else {
+        selected_type_index = -1;
+    }
  
     // Aktualisiert die sichtbare Jahreszahl und die Sliderposition.
     sliderValueLabel.html("Jahr: " + current_year);
@@ -515,11 +523,17 @@ function draw() {
         textAlign(LEFT, TOP);
         textSize(typeLabelLayout.labelSize);
         fill(isSelected ? "#F77F1B" : "#181717");
-        textStyle(NORMAL);
+
         const sharedLabelX = typeLabelLayout.positions[i];
  
         const typeLabelY = rectangleY + rectangleHeight / 2 + 5
             + typeLabelLayout.rowIndexes[i] * typeLabelLayout.rowGap;
+
+        if(isSelected){
+            textStyle(BOLD);
+        } else {
+            textStyle(NORMAL)
+        }
         text(
             // Die rechte Textkante liegt auf der Prozentlinie.
             current_data[i].type,
@@ -642,5 +656,4 @@ function updateLayout() {
     sliderValueLabel.position(width / 2, height - 130);
 }
  
-
 
