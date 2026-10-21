@@ -3,10 +3,10 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-rows: repeat(2, minmax(0, 1fr));
     position: sticky;
-    top: var(--intro-h);
-    height: calc(100vh - var(--intro-h));
+    top: var(--intro-h); /* damit die Grid-Zellen nicht hinter dem Header verschwinden */
+    height: calc(100vh - var(--intro-h)); /* damit die Grid-Zellen die volle Höhe einnehmen */
     min-height: 0;
-    scroll-margin-top: var(--intro-h);
+    scroll-margin-top: var(--intro-h); /* damit die Scroll-Position nicht hinter dem Header verschwindet */
     background: #f77f1b;
     overflow: hidden;
     margin-left: -400px;   /* gleiche Breite wie .sidebar */
