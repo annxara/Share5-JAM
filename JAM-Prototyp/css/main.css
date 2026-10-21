@@ -221,7 +221,7 @@ body {
 }
 
 .sidebar-link:hover {
-    background: #f3f3f3;
+    background: #ffffff;
 }
 
 .disease-group {
@@ -323,7 +323,7 @@ body {
 }
 
 .disease-submenu .sidebar-link:hover {
-    background: #f3f3f3;
+    background: #ffffff;
 }
 
 .disease-submenu .sidebar-link.active {
