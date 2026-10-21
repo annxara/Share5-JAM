@@ -69,7 +69,8 @@ body {
 }
 
 .scrolly-data-button:hover {
-  background: #f3f3f3;
+  background: #ffffff;
+  color: #873100;
 }
 
 /* Platzierung der Schrift mittig über Abbildung */

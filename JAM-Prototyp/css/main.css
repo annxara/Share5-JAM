@@ -278,6 +278,8 @@ body {
     background-size: contain;
     flex-shrink: 0;
     margin-left: 20px;
+    position: relative;
+    bottom: 5px;
 }
 
 
@@ -375,7 +377,9 @@ body {
     background-size: contain;
     flex-shrink: 0;
     transform: rotate(90deg);
-    margin-top: 0;
+    position: relative;
+    top: 3px;
+    left: 8px;
     filter: invert(1);
 }
 
