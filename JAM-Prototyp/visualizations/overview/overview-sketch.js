@@ -15,13 +15,13 @@ const charts = [
         id: 'canvas-container-shigellose',
         name: 'Shigellose',
         count: 27,
-        numberPosition: { x: 0.66, y: 0.5 }
+        numberPosition: { x: 0.66, y: 0.45 }
     },
     {
         id: 'canvas-container-ehec',
         name: 'EHEC',
         count: 261,
-        numberPosition: { x: 0.33, y: 0.5 }
+        numberPosition: { x: 0.33, y: 0.45 }
     },
 ];
 

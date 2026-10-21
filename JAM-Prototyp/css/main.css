@@ -111,9 +111,8 @@ body {
 }
 
 :root {
-    --mainnav-h: 0px;
-    --intro-h: 0px;
-    /* wird per JS gesetzt: Mainnav plus Intro */
+    --header-h: 0px;
+    --footer-h: 0px;
 }
 
 .page-intro {
@@ -145,7 +144,7 @@ body {
 
 .orange-section {
     background: #ffffff;
-    min-height: calc(100vh - 220px);
+    min-height: 0;   /* statt calc(100vh - 220px) */
     /* Adjust based on the height of the header and other elements */
 }
 
@@ -158,7 +157,7 @@ body {
 .scrolly-layout {
     display: flex;
     align-items: stretch;
-    min-height: calc(100vh - var(--intro-h));
+    min-height: calc(100vh - var(--intro-h) - var(--footer-h));
 }
 
 .sidebar {
@@ -168,7 +167,7 @@ body {
     width: 400px;
     flex: 0 0 400px;
     align-self: flex-start;
-    max-height: calc(100vh - var(--intro-h));
+    max-height: calc(100vh - var(--intro-h) - var(--footer-h));
     overflow-y: auto;
     background: #fff;
     border-right: 1px solid #ddd;
@@ -414,7 +413,7 @@ body {
         width: 400px;
         flex: 0 0 400px;
         align-self: flex-start;
-        max-height: calc(100vh - var(--intro-h));
+        max-height: calc(100vh - var(--header-h) - var(--intro-h));
         overflow-y: auto;
         background: #fff;
         border-right: 1px solid #ddd;

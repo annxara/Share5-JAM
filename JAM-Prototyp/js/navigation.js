@@ -14,6 +14,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const intro = document.querySelector('.page-intro');
     let openingDataView = false;
 
+    const headerEl = document.querySelector('header');
+
+    function updateHeaderHeight() {
+        document.documentElement.style.setProperty('--header-h', headerEl.offsetHeight + 'px');
+    }
+
+    updateHeaderHeight();
+    window.addEventListener('resize', updateHeaderHeight);
+    window.addEventListener('load', updateHeaderHeight); // falls das Logo erst spät lädt
+
     function updateStickyHeaderHeight() {
         const mainnavHeight = mainnav ? mainnav.offsetHeight : 0;
         const introHeight = intro ? intro.offsetHeight : 0;
