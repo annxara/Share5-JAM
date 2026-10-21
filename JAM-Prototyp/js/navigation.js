@@ -10,16 +10,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const diseaseGroups = document.querySelectorAll('.disease-group');
     const scrollyDataButton = document.querySelector('.scrolly-data-button');
 
+    const mainnav = document.querySelector('.mainnav');
     const intro = document.querySelector('.page-intro');
+    let openingDataView = false;
 
-    function updateIntroHeight() {
-        if (!intro) return;
-        document.documentElement.style.setProperty('--intro-h', intro.offsetHeight + 'px');
+    function updateStickyHeaderHeight() {
+        const mainnavHeight = mainnav ? mainnav.offsetHeight : 0;
+        const introHeight = intro ? intro.offsetHeight : 0;
+
+        document.documentElement.style.setProperty(
+            '--mainnav-h',
+            mainnavHeight + 'px'
+        );
+        document.documentElement.style.setProperty(
+            '--intro-h',
+            mainnavHeight + introHeight + 'px'
+        );
     }
 
-    updateIntroHeight();
+    updateStickyHeaderHeight();
 
-    if (intro) new ResizeObserver(updateIntroHeight).observe(intro);
+    if (mainnav || intro) {
+        const stickyHeaderObserver = new ResizeObserver(updateStickyHeaderHeight);
+        if (mainnav) {
+            stickyHeaderObserver.observe(mainnav);
+        }
+        if (intro) {
+            stickyHeaderObserver.observe(intro);
+        }
+    }
 
     function setDataMenu(open) {
         if (!dataToggle) {
@@ -47,13 +66,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function openDataView() {
+    function openDataView(scrollToStart = true) {
+        openingDataView = true;
         setDataMenu(true);
         setView('data');
+        if (salmonGroup) {
+            salmonGroup.classList.add('active');
+        }
         if (scrollyLayout) {
             scrollyLayout.classList.remove('data-nav-collapsed');
         }
-        scrollToDataStart();
+        if (scrollToStart) {
+            scrollToDataStart();
+        }
+
+        requestAnimationFrame(() => {
+            openingDataView = false;
+        });
     }
 
     function scrollToDataCard(link) {
@@ -78,6 +107,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function collapseNavigationOnScroll() {
         if (!dataContent || dataContent.hidden) {
+            return;
+        }
+
+        if (openingDataView) {
             return;
         }
 
@@ -110,6 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (scrollyLayout) {
             scrollyLayout.classList.toggle('scrolly-mode', view === 'scrolly');
+            scrollyLayout.classList.toggle('overview-mode', view === 'overview');
             if (view !== 'data') {
                 scrollyLayout.classList.remove('data-nav-collapsed');
             }
@@ -192,7 +226,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (link === dataToggle) {
                 if (shouldOpenDataMenu) {
-                    openDataView();
+                    const alreadyInDataView = dataContent && !dataContent.hidden;
+                    openDataView(!alreadyInDataView);
                 } else {
                     setDataMenu(false);
                     setView('data');

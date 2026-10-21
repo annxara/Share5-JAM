@@ -2,10 +2,18 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-rows: repeat(2, minmax(0, 1fr));
-    height: 85vh;
+    position: sticky;
+    top: var(--intro-h);
+    height: calc(100vh - var(--intro-h));
+    min-height: 0;
+    scroll-margin-top: var(--intro-h);
     background: #f77f1b;
     overflow: hidden;
     margin-left: -400px;   /* gleiche Breite wie .sidebar */
+}
+
+.scrolly-layout.overview-mode {
+    min-height: calc(100vh + var(--intro-h));
 }
 
 .overview-chart {
@@ -20,10 +28,6 @@
     width: 100% !important;
     height: 100% !important;
 }
-
-
-
-
 
 
 

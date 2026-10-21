@@ -75,6 +75,10 @@ body {
 
 .mainnav {
     display: flex;
+    position: sticky;
+    top: 0;
+    isolation: isolate;
+    z-index: 100;
     gap: 28px;
     padding: 14px 24px;
     background: #fff;
@@ -83,6 +87,8 @@ body {
 }
 
 .mainnav a {
+    position: relative;
+    z-index: 1;
     text-decoration: none;
     color: #333;
     padding-bottom: 6px;
@@ -105,13 +111,14 @@ body {
 }
 
 :root {
+    --mainnav-h: 0px;
     --intro-h: 0px;
-    /* wird per JS gesetzt */
+    /* wird per JS gesetzt: Mainnav plus Intro */
 }
 
 .page-intro {
     position: sticky;
-    top: 0;
+    top: var(--mainnav-h);
     z-index: 20;
     padding: 24px 24px 16px;
     background: #fff;
