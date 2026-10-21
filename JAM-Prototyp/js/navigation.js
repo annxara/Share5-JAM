@@ -60,16 +60,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function scrollToDataStart() {
-        if (!dataContent) {
+        if (!scrollyLayout) {
             return;
         }
 
         requestAnimationFrame(() => {
-            const introHeight = intro ? intro.offsetHeight : 0;
-            const dataTop = dataContent.getBoundingClientRect().top + window.scrollY;
+            const layoutTop = scrollyLayout.getBoundingClientRect().top + window.scrollY;
 
             window.scrollTo({
-                top: Math.max(0, dataTop - introHeight),
+                top: Math.max(0, 0),
                 left: 0,
                 behavior: 'auto',
             });
@@ -201,25 +200,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 setDataMenu(false);
                 setView('scrolly');
             } else if (inScrolly) {
-                // Scrolly: komplette Navigation ein- oder ausklappen
+                // Scrolly: zwischen kompakter und vollständiger Navigation wechseln
                 const isExpanded = scrollyLayout.classList.contains('nav-expanded');
                 scrollyLayout.classList.toggle('nav-expanded', !isExpanded);
                 salmonGroup.classList.toggle('active', !isExpanded);
+                setDataMenu(false);
             } else {
-                // Datenansicht: normal auf- und zuklappen
-                const wasCollapsed = scrollyLayout
+                // Datenansicht: zwischen kompakter und vollständiger Navigation wechseln
+                const isCollapsed = scrollyLayout
                     && scrollyLayout.classList.contains('data-nav-collapsed');
 
                 if (scrollyLayout) {
-                    scrollyLayout.classList.remove('data-nav-collapsed');
+                    scrollyLayout.classList.toggle('data-nav-collapsed', !isCollapsed);
                 }
-
-                if (wasCollapsed) {
-                    salmonGroup.classList.add('active');
-                    setDataMenu(true);
-                } else {
-                    salmonGroup.classList.toggle('active');
-                }
+                salmonGroup.classList.toggle('active', isCollapsed);
+                setDataMenu(isCollapsed);
             }
         });
     }
